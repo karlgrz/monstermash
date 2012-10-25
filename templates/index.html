@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+{% block content %}
+	<h1>Mash it up!</h1>
+	<form method="post" action="{{ url_for('new') }}">
+		<p><label>Song 1:</label> <input type="text" name="song1" required></p>
+		<p><label>Song 2:</label> <input type="text" name="song2" required></p>
+		<p><button type="submit">Send</button></p>
+	</form>
+{% endblock %}

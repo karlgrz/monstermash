@@ -2,4 +2,6 @@ monstermash - the mashup generator
 
 create your own unique mashups as simply as uploading the tracks you want to the monstermash server!
 
-More info to come!
+built with python, flask, and pyechonest
+
+more info to come!
