@@ -1,14 +1,34 @@
-from flask import Flask, render_template, request, redirect, url_for, abort, session
+import os
+from flask import Flask, render_template, request, redirect, url_for, abort, session, send_from_directory
+from werkzeug import secure_filename
+
+ALLOWED_EXTENSIONS = set(['mp3'])
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'HGEJKH@&ASA<&@(!!H'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///example.db'
-
+app.config['UPLOAD_FOLDER'] = ''
 from models import *
 
-@app.route('/')
-def home():
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+
+@app.route('/', methods=['GET', 'POST'])
+def upload_file():
+    if request.method == 'POST':
+        file = request.files['file']
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            return redirect(url_for('uploaded_file',
+                                    filename=filename))
     return render_template('index.html')
+
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'],
+                               filename)
 
 @app.route('/new', methods=['POST'])
 def new():
@@ -19,7 +39,7 @@ def new():
 	return redirect(url_for('mash', mashId=mash.id))
 
 @app.route('/mash/<mashId>')
-def list(mashId):
+def mash(mashId):
 	mash = Mash.query.filter_by(id=mashId).first_or_404()
 	return render_template('mash.html', mash=mash)
 
