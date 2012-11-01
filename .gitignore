@@ -4,3 +4,4 @@ tmp/
 *.db
 static/.webassets-cache/*
 upload/*
+static/gen/*
