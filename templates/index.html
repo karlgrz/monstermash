@@ -1,9 +1,20 @@
 {% extends "layout.html" %}
 {% block content %}
-	<title>Mash it up!</title>
-	<h1>Mash it up!</h1>
-	<form action="" method=post enctype=multipart/form-data>
-		<p><input type=file name=file>
-		<input type=submit value=Upload>
-	</form>
+<form class="form-horizonal" action="/" method=post enctype=multipart/form-data>
+	<div class="control-group">
+		<label class="control-label" for="song1">Song 1</label>
+		<div class="controls">
+			<input type="file" name="song1" />
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label" for="song2">Song 2</label>
+		<div class="controls">
+			<input type="file" name="song2" />
+		</div>
+	</div>
+	<div class="control-group">
+		<button type=submit class="btn btn-primary">Upload</button>
+	</div>
+</form>
 {% endblock %}
