@@ -4,6 +4,12 @@ from werkzeug import secure_filename
 from flask.ext.assets import Environment
 from webassets.loaders import PythonLoader as PythonAssetsLoader
 import assets
+import zmq
+import json
+
+context = zmq.Context()
+socket = context.socket(zmq.PUSH)
+socket.connect('tcp://0.0.0.0:5000')
 
 ALLOWED_EXTENSIONS = set(['mp3'])
 env = os.environ.get('FLASK_ENV', 'prod')
@@ -32,8 +38,14 @@ def home():
 		mash = Mash(song1Filename, song2Filename, url_for('uploaded_file', filename=song1Filename))	
 		db.session.add(mash)
 		db.session.commit()
+		print 'NEW MASH: {0}'.format(mash.id)
+		socket.send_json(convert_mash_to_zeromq_message(mash))
 		return redirect(url_for('mash', mashId=mash.id))
 	return render_template('index.html')
+
+def convert_mash_to_zeromq_message(mash):
+	obj = [{'id':mash.id, 'song1':mash.song1, 'song2':mash.song2, 'url':mash.url}]
+	return json.dumps(obj)
 
 def save_file(file):
 	if file and allowed_file(file.filename):
@@ -47,9 +59,23 @@ def uploaded_file(filename):
 
 @app.route('/mash/<mashId>')
 def mash(mashId):
+	print 'MADE IT TO MASH, ID:%s' % (mashId)
 	mash = Mash.query.filter_by(id=mashId).first_or_404()
 	return render_template('mash.html', mash=mash)
 
+@app.route('/list')
+def list():
+	print 'MADE IT TO LIST'
+	mashes = Mash.query.all()
+	return render_template('list.html', mashes=mashes)
+
+@app.route('/resubmit/<mashId>')
+def resubmit(mashId):
+	print 'MADE IT TO RESUBMIT, ID:%s' % (mashId)
+	mash = Mash.query.filter_by(id=mashId).first_or_404()
+	socket.send_json(convert_mash_to_zeromq_message(mash))
+	return redirect(url_for('mash', mashId=mash.id))
+	
 if __name__ == '__main__':
 	app.debug = True
-	app.run()
+	app.run('0.0.0.0', 8000)

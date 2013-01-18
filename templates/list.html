@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block content %}
+{% for mash in mashes %}
+<p>{{ mash.song1 }} - {{ mash.song2 }} </p>
+<p>
+	<a href="{{ mash.url }}">{{ mash.id }} {{ mash.url }}</a> - <a href="resubmit/{{ mash.id }}">Resubmit {{ mash.id }}</a>
+</p>
+{% endfor %}
+<p>
+	<a href ="{{ url_for('home') }}">New Mash</a>
+</p>
+{% endblock %}
