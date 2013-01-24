@@ -5,23 +5,17 @@ import zmq
 import json
 import requests
 import time
+from models import *
 from afromb import AfromB 
 
 context = zmq.Context()
 socket = context.socket(zmq.PULL)
 socket.bind('tcp://0.0.0.0:5000')
 
-class MashMessage:
-	def __init__(self, id, song1, song2, url):
-		self.id = id
-		self.song1 = song1
-		self.song2 = song2
-		self.url = url
-
 while True:
 	message = socket.recv_json()
 	obj = json.loads(message)[0]
-	mash = MashMessage(obj['id'], obj['song1'], obj['song2'], obj['url'])
+	mash = Mash(obj['id'], obj['song1'], obj['song2'], obj['url'])
 	
 	print 'Downloading song1={0}'.format(mash.song1)
 	r = requests.get('http://127.0.0.1:8000/uploads/{0}'.format(mash.song1))
