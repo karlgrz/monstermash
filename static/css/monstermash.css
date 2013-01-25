@@ -1,8 +1,9 @@
 body {
 	width: 1030px;
-	height: 940px;
-	margin-left: 360px;
-	margin-right: 360px;
+	position:absolute;
+	left:50%;
+	top:50%;
+	margin:-271px 0 0 -400px;
 }
 
 .container {
