@@ -6,6 +6,12 @@ body {
 	margin:-271px 0 0 -400px;
 }
 
+.wrap {
+	height: auto !important;
+	margin: 0 auto -60px;
+    min-height: 100%;
+}
+
 .container {
 	padding-top: 20px;
 }
