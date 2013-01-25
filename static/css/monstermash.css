@@ -40,3 +40,8 @@ body {
 div.banner {
     border: 1px solid #AAA;
 }
+
+.footer {
+	height: 80px;
+	background-color: #F5F5F5;
+}
