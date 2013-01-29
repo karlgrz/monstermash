@@ -13,29 +13,26 @@
 	</head>
 	<body>
 		<div class="wrap">
-			<div class="container-fluid">
-				<div class="row-fluid">
-					<div class="span9">	
-						<div class="hero-unit banner">
-							<div style="float: left;">
-								<h1>MonsterMash</h1>
-								<p>Create mash ups of your favorite songs!</p>
-								<img src="static/images/MonsterMash_Monster.png" style="width: 300px; height: 300px;"/>
-							</div>
-							<div style="float: right;">
-								{% block content %}{% endblock %}
-							</div>
-							<div style="clear: both;"></div>
-						</div>
+			<div class="container">
+				<div class="page-header">
+					<div style="float: left;">
+						<h1>MonsterMash</h1>
+						<p>Create mash ups of your favorite songs!</p>
+						<img src="{{ url_for('static', filename='images/MonsterMash_Monster.png') }}" style="width: 300px; height: 300px;"/>
 					</div>
+					<div style="float: right;">
+						{% block content %}{% endblock %}
+					</div>
+					<div style="clear: both;"></div>
 				</div>
 			</div>
-			<div id="footer">
-				<div class="container">
-					<p class="muted credit">
-						<a href="http://the.echonest.com/"><img src="static/images/EN_P_on_White.gif" alt="Powered by The Echo Nest" /></a>
-					</p>
-				</div>
+			<div class="push"></div>
+		</div>
+		<div id="footer">
+			<div class="container">
+				<p class="muted credit">
+					<a href="http://the.echonest.com/"><img src="{{ url_for('static', filename='images/EN_P_on_Light_Transparent.png') }}" alt="Powered by The Echo Nest" /></a>
+				</p>
 			</div>
 		</div>
 	</body>
