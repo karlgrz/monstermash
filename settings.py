@@ -5,10 +5,10 @@ class Config(object):
 
 
 class ProdConfig(Config):
-	SQLALCHEMY_DATABASE_URI = 'sqlite:///example.db'
+	SQLALCHEMY_DATABASE_URI = 'sqlite:///mash.db'
 
 class DevConfig(Config):
 	ASSETS_DEBUG = True
 	DEBUG = True
-	SQLALCHEMY_DATABASE_URI = 'sqlite:///example.db'
+	SQLALCHEMY_DATABASE_URI = 'sqlite:///mash.db'
 	SQLALCHEMY_ECHO = True
