@@ -7,6 +7,8 @@ import time
 from afromb import AfromB 
 from filedownloader import FileDownloader
 from mashmessage import MashMessage
+import subprocess
+import os
 
 context = zmq.Context()
 socket = context.socket(zmq.PULL)
@@ -33,3 +35,6 @@ while True:
 	afromb = AfromB(song1.output, song2.output, mashoutput, ).run(mix='0.9', envelope='env')
 	toc = time.time()
 	print "Elapsed time: %.3f sec" % float(toc-tic)
+	
+	p = subprocess.Popen(["scp", mashoutput, "karl@localhost:~/workspace"])
+	sts = os.waitpid(p.pid, 0)
