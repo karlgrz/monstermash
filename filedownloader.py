@@ -16,6 +16,6 @@ class FileDownloader:
 		print 'Downloading file={0}'.format(self.filename)
 		if not os.path.exists(self.folder):
 			os.makedirs(self.folder)	
-		r = requests.get('{0}/uploads/{1}'.format(self.remotehost, self.filename))
+		r = requests.get('{0}/uploads/{1}/{2}'.format(self.remotehost, self.key, self.filename))
 		with open(self.output, "wb") as file:
 			file.write(r.content)

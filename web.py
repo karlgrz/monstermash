@@ -34,9 +34,9 @@ def home():
 	if request.method == 'POST':
 		key = uuid.uuid4().hex
 		song1 = request.files['song1']
-		song1Filename = save_file(song1)
+		song1Filename = save_file(song1, key)
 		song2 = request.files['song2']
-		song2Filename = save_file(song2)
+		song2Filename = save_file(song2, key)
 		mash = Mash(key, song1Filename, song2Filename, 'uploaded')	
 		db.session.add(mash)
 		db.session.commit()
@@ -48,15 +48,20 @@ def convert_mash_to_zeromq_message(mash):
 	obj = [{'id':mash.id, 'key':mash.key, 'song1':mash.song1, 'song2':mash.song2, 'status':mash.status}]
 	return json.dumps(obj)
 
-def save_file(file):
+def save_file(file, key):
 	if file and allowed_file(file.filename):
 		filename = secure_filename(file.filename)
-		file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+		folder = os.path.join(app.config['UPLOAD_FOLDER'], key)
+		if not os.path.exists(folder):
+			os.makedirs(folder)		
+		file.save(os.path.join(app.config['UPLOAD_FOLDER'], key, filename))
 		return filename
 
-@app.route('/uploads/<filename>')
-def uploaded_file(filename):
-	return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+@app.route('/uploads/<key>/<filename>')
+def uploads(key, filename):
+	print 'IM IN UPLOADS!!! key={0}, filename={1}'.format(key, filename)
+	folder = os.path.join(app.config['UPLOAD_FOLDER'], key)
+	return send_from_directory(folder, filename)
 
 @app.route('/mash/<mashId>')
 def mash(mashId):

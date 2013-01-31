@@ -15,6 +15,8 @@ socket = context.socket(zmq.PULL)
 socket.bind('tcp://0.0.0.0:5000')
 
 mashTemp = 'mash-temp'
+uploadFolder = '~/workspace/monstermash/upload'
+
 remotehost = 'http://127.0.0.1:8000'
 while True:
 	message = socket.recv_json()
@@ -35,6 +37,7 @@ while True:
 	afromb = AfromB(song1.output, song2.output, mashoutput, ).run(mix='0.9', envelope='env')
 	toc = time.time()
 	print "Elapsed time: %.3f sec" % float(toc-tic)
-	
-	p = subprocess.Popen(["scp", mashoutput, "karl@localhost:~/workspace"])
+
+	outputpath = os.path.join(uploadFolder, mash.key, 'output.mp3')	
+	p = subprocess.Popen(["scp", mashoutput, "karl@localhost:{0}".format(outputpath)])
 	sts = os.waitpid(p.pid, 0)

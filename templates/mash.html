@@ -1,8 +1,11 @@
 {% extends "layout.html" %}
 {% block content %}
-<p>{{ mash.song1 }} - {{ mash.song2 }} </p>
+<p><a href="{{ url_for('uploads', key=mash.key, filename=mash.song1) }}">{{ mash.song1 }}</a> - <a href="{{ url_for('uploads', key=mash.key, filename=mash.song2) }}">{{ mash.song2 }}</a> </p>
 <p>
-	<a href="{{ mash.url }}">{{ mash.url }}</a>
+	<a href="{{ url_for('uploads', key=mash.key, filename='output.mp3') }}">{{ mash.key }}</a>
+</p>
+<p>
+	<a href="{{ url_for('resubmit', mashId=mash.id) }}">Resubmit</a>
 </p>
 <p>
 	<a href ="{{ url_for('home') }}">New Mash</a>
