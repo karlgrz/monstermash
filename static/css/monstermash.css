@@ -14,6 +14,10 @@ p {
 	margin: 20px 0 0;
 }
 
+.logo {
+	padding: 20px 0;
+}
+
 #push,
 #footer {
   height: 60px;
