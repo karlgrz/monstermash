@@ -62,9 +62,9 @@ div.banner {
 }
 
 .mashstatusuploaded {
-	font-color: red;
+	color: red;
 }
 
 .mashstatusready {
-	font-color: green;
+	color: green;
 }
