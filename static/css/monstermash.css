@@ -60,3 +60,11 @@ p {
 div.banner {
     border: 1px solid #AAA;
 }
+
+.mashstatusuploaded {
+	font-color: red;
+}
+
+.mashstatusready {
+	font-color: green;
+}
