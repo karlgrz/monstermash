@@ -8,15 +8,17 @@ import zmq
 import json
 import uuid
 
-context = zmq.Context()
-socket = context.socket(zmq.PUSH)
-socket.connect('tcp://0.0.0.0:5000')
-
 ALLOWED_EXTENSIONS = set(['mp3'])
 env = os.environ.get('FLASK_ENV', 'prod')
 app = Flask(__name__)
 app.config.from_object('settings.%sConfig' % env.capitalize())
 app.config['ENV'] = env
+
+print app.config['REMOTEPUSH']
+
+context = zmq.Context()
+socket = context.socket(zmq.PUSH)
+socket.connect(app.config['REMOTEPUSH'])
 
 assets_env = Environment(app)
 assets_loader = PythonAssetsLoader(assets)
@@ -37,11 +39,12 @@ def home():
 		song1Filename = save_file(song1, key)
 		song2 = request.files['song2']
 		song2Filename = save_file(song2, key)
-		mash = Mash(key, song1Filename, song2Filename, 'uploaded')	
+		status = 'uploaded'
+		mash = Mash(key, song1Filename, song2Filename, status)	
 		db.session.add(mash)
 		db.session.commit()
 		socket.send_json(convert_mash_to_zeromq_message(mash))
-		return redirect(url_for('mash', mashId=mash.id))
+		return redirect(url_for('mash', key=mash.key))
 	return render_template('index.html')
 
 def convert_mash_to_zeromq_message(mash):
@@ -59,13 +62,14 @@ def save_file(file, key):
 
 @app.route('/uploads/<key>/<filename>')
 def uploads(key, filename):
-	print 'IM IN UPLOADS!!! key={0}, filename={1}'.format(key, filename)
+	print '/uploads/{0}/{1}'.format(key, filename)
 	folder = os.path.join(app.config['UPLOAD_FOLDER'], key)
 	return send_from_directory(folder, filename)
 
-@app.route('/mash/<mashId>')
-def mash(mashId):
-	mash = Mash.query.filter_by(id=mashId).first_or_404()
+@app.route('/mash/<key>')
+def mash(key):
+	print '/mash/{0}'.format(key)
+	mash = Mash.query.filter_by(key=key).first_or_404()
 	return render_template('mash.html', mash=mash)
 
 @app.route('/list')
@@ -73,11 +77,11 @@ def list():
 	mashes = Mash.query.all()
 	return render_template('list.html', mashes=mashes)
 
-@app.route('/resubmit/<mashId>')
-def resubmit(mashId):
-	mash = Mash.query.filter_by(id=mashId).first_or_404()
+@app.route('/resubmit/<key>')
+def resubmit(key):
+	mash = Mash.query.filter_by(key=key).first_or_404()
 	socket.send_json(convert_mash_to_zeromq_message(mash))
-	return redirect(url_for('mash', mashId=mash.id))
+	return redirect(url_for('mash', key=mash.key))
 	
 if __name__ == '__main__':
 	app.debug = True

@@ -6,4 +6,4 @@ static/.webassets-cache/
 upload/
 static/gen/
 *.mp3
-mash-files/
+mash-temp/
