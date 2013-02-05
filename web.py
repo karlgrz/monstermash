@@ -26,7 +26,6 @@ app.config['ENV'] = env
 
 logger.info('app.config[REMOTEPUSH] = {0}'.format(app.config['REMOTEPUSH']))
 
-
 context = zmq.Context()
 socket = context.socket(zmq.PUSH)
 socket.connect(app.config['REMOTEPUSH'])
@@ -69,17 +68,23 @@ def home():
 	return render_template('index.html')
 
 def convert_mash_to_zeromq_message(mash):
-	obj = [{'id':mash.id, 'key':mash.key, 'song1':mash.song1, 'song2':mash.song2, 'status':mash.status}]
-	return json.dumps(obj)
+	try:
+		obj = [{'id':mash.id, 'key':mash.key, 'song1':mash.song1, 'song2':mash.song2, 'status':mash.status}]
+		return json.dumps(obj)
+	except Exception as ex:
+		logger.error('Something bad happened: convert_mash_to_zeromq_message, mash={0}'.format(mash), ex)
 
 def save_file(file, key):
-	if file and allowed_file(file.filename):
-		filename = secure_filename(file.filename)
-		folder = os.path.join(app.config['UPLOAD_FOLDER'], key)
-		if not os.path.exists(folder):
-			os.makedirs(folder)		
-		file.save(os.path.join(app.config['UPLOAD_FOLDER'], key, filename))
-		return filename
+	try:
+		if file and allowed_file(file.filename):
+			filename = secure_filename(file.filename)
+			folder = os.path.join(app.config['UPLOAD_FOLDER'], key)
+			if not os.path.exists(folder):
+				os.makedirs(folder)		
+			file.save(os.path.join(app.config['UPLOAD_FOLDER'], key, filename))
+			return filename
+	except Exception as ex:
+		logger.error('Something bad happened: save_file, key={0}, filename={1}'.format(key, file.filename), ex)
 
 @app.route('/uploads/<key>/<filename>')
 def uploads(key, filename):
@@ -89,21 +94,30 @@ def uploads(key, filename):
 
 @app.route('/mash/<key>')
 def mash(key):
-	print '/mash/{0}'.format(key)
-	mash = session.query(Mash).filter(Mash.key==key).first()
-	return render_template('mash.html', mash=mash)
+	try:
+		print '/mash/{0}'.format(key)
+		mash = session.query(Mash).filter(Mash.key==key).first()
+		return render_template('mash.html', mash=mash)
+	except Exception as ex:
+		logger.error('Something bad happened: mash, key={0}'.format(key), ex)
 
 @app.route('/list')
 def list():
-	mashes = session.query(Mash).all()
-	return render_template('list.html', mashes=mashes)
-
+	try:
+		mashes = session.query(Mash).all()
+		return render_template('list.html', mashes=mashes)
+	except Exception as ex:
+		logger.error('Something bad happened: list', ex)
+		
 @app.route('/resubmit/<key>')
 def resubmit(key):
-	mash = session.query(Mash).filter(Mash.key==key).first()
-	socket.send_json(convert_mash_to_zeromq_message(mash))
-	return redirect(url_for('mash', key=mash.key))
-	
+	try:
+		mash = session.query(Mash).filter(Mash.key==key).first()
+		socket.send_json(convert_mash_to_zeromq_message(mash))
+		return redirect(url_for('mash', key=mash.key))
+	except Exception as ex:
+		logger.error('Something bad happened: resubmit, key={0}'.format(key), ex)
+		
 if __name__ == '__main__':
 	app.debug = True
 	app.run('0.0.0.0', 8000)
