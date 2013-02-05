@@ -10,9 +10,9 @@ from mashmessage import MashMessage
 import subprocess
 import os
 from config import Config
-#from sqlalchemy import *
-#from sqlalchemy.orm import sessionmaker
-#from models import *
+from sqlalchemy import *
+from sqlalchemy.orm import sessionmaker
+from modelsserver import *
 
 f = file('mash.cfg')
 cfg = Config(f)
@@ -32,16 +32,17 @@ print uploadFolder
 print remotehost
 print dbhost
 
-#db = create_engine(dbhost)
-#db.echo = True 
-#Session = sessionmaker(bind=db)
-#session = Session()
+db = create_engine(dbhost)
+db.echo = True 
+Session = sessionmaker(bind=db)
+session = Session()
 
 while True:
 	message = socket.recv_json()
 	obj = json.loads(message)[0]
 	mash = MashMessage(obj['id'], obj['key'], obj['song1'], obj['song2'], obj['status'])
 	try:	
+		print 'Processing: (id={0},key={1},song1={2},song2={3},status={4})'.format(mash.id, mash.key, mash.song1, mash.song2, mash.status)
 		song1 = FileDownloader(remotehost, temp, mash.key, mash.song1)
 		song1.download()
 
@@ -61,9 +62,12 @@ while True:
 		p = subprocess.Popen(["scp", mashoutput, "{0}@{1}:{2}".format(cfg.outputhostuser, cfg.outputhostname, outputpath)])
 		sts = os.waitpid(p.pid, 0)
 
-		#mashupdate = session.query(Mash).filter(Mash.id==mash.id).first()
-		#mashupdate.status = 'ready'
-		#session.commit()
+		mashupdate = session.query(Mash).filter(Mash.id==mash.id).first()
+		mashupdate.status = 'ready'
+		session.commit()
 	except Exception as ex:
-		#session.rollback()
-		print 'Something failed processing {0} - {1} - {2}:', ex 
+		mashupdate = session.query(Mash).filter(Mash.id==mash.id).first()
+		mashupdate.status = 'failed'
+		mashupdate.error = ex
+		session.commit()
+		print 'Something failed processing: ', ex 
