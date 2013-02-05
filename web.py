@@ -7,6 +7,16 @@ import assets
 import zmq
 import json
 import uuid
+import logging
+from sqlalchemy import *
+from sqlalchemy.orm import sessionmaker
+
+logger = logging.getLogger('web')
+handler = logging.FileHandler('./log/web.log')
+formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+logger.setLevel(logging.INFO)
 
 ALLOWED_EXTENSIONS = set(['mp3'])
 env = os.environ.get('FLASK_ENV', 'prod')
@@ -14,7 +24,8 @@ app = Flask(__name__)
 app.config.from_object('settings.%sConfig' % env.capitalize())
 app.config['ENV'] = env
 
-print app.config['REMOTEPUSH']
+logger.info('app.config[REMOTEPUSH] = {0}'.format(app.config['REMOTEPUSH']))
+
 
 context = zmq.Context()
 socket = context.socket(zmq.PUSH)
@@ -25,7 +36,12 @@ assets_loader = PythonAssetsLoader(assets)
 for name, bundle in assets_loader.load_bundles().iteritems():
 	assets_env.register(name, bundle)
 
-from models import *
+from modelsserver import *
+
+db = create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
+db.echo = True
+Session = sessionmaker(bind=db)
+session = Session()
 
 def allowed_file(filename):
 	return '.' in filename and \
@@ -34,17 +50,22 @@ def allowed_file(filename):
 @app.route('/', methods=['GET', 'POST'])
 def home():
 	if request.method == 'POST':
-		key = uuid.uuid4().hex
-		song1 = request.files['song1']
-		song1Filename = save_file(song1, key)
-		song2 = request.files['song2']
-		song2Filename = save_file(song2, key)
-		status = 'uploaded'
-		mash = Mash(key, song1Filename, song2Filename, status)	
-		db.session.add(mash)
-		db.session.commit()
-		socket.send_json(convert_mash_to_zeromq_message(mash))
-		return redirect(url_for('mash', key=mash.key))
+		try:
+			key = uuid.uuid4().hex
+			song1 = request.files['song1']
+			song1Filename = save_file(song1, key)
+			song2 = request.files['song2']
+			song2Filename = save_file(song2, key)
+			status = 'uploaded'
+			mash = Mash(key, song1Filename, song2Filename, status)	
+			mashupdate = session.query(Mash).filter(Mash.id==mash.id).first()
+			session.add(mash)
+			session.commit()
+			socket.send_json(convert_mash_to_zeromq_message(mash))
+			return redirect(url_for('mash', key=mash.key))
+		except Exception as ex:
+			session.rollback()
+			logger.error('Something bad happened:', ex)
 	return render_template('index.html')
 
 def convert_mash_to_zeromq_message(mash):
@@ -69,17 +90,17 @@ def uploads(key, filename):
 @app.route('/mash/<key>')
 def mash(key):
 	print '/mash/{0}'.format(key)
-	mash = Mash.query.filter_by(key=key).first_or_404()
+	mash = session.query(Mash).filter(Mash.key==key).first()
 	return render_template('mash.html', mash=mash)
 
 @app.route('/list')
 def list():
-	mashes = Mash.query.all()
+	mashes = session.query(Mash).all()
 	return render_template('list.html', mashes=mashes)
 
 @app.route('/resubmit/<key>')
 def resubmit(key):
-	mash = Mash.query.filter_by(key=key).first_or_404()
+	mash = session.query(Mash).filter(Mash.key==key).first()
 	socket.send_json(convert_mash_to_zeromq_message(mash))
 	return redirect(url_for('mash', key=mash.key))
 	

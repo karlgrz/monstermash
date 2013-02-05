@@ -13,6 +13,14 @@ from config import Config
 from sqlalchemy import *
 from sqlalchemy.orm import sessionmaker
 from modelsserver import *
+import logging
+
+logger = logging.getLogger('server')
+handler = logging.FileHandler('./log/server.log')
+formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+logger.setLevel(logging.DEBUG)
 
 f = file('mash.cfg')
 cfg = Config(f)
@@ -26,11 +34,11 @@ uploadFolder = cfg.uploadFolder
 remotehost = cfg.remotehost
 dbhost = cfg.dbhost
 
-print cfg.localmq
-print temp
-print uploadFolder
-print remotehost
-print dbhost
+logger.debug('localmq={0}'.format(cfg.localmq))
+logger.debug('temp={0}'.format(cfg.temp))
+logger.debug('uploadFolder={0}'.format(cfg.uploadFolder))
+logger.debug('remotehost={0}'.format(cfg.remotehost))
+logger.debug('dbhost={0}'.format(cfg.dbhost))
 
 db = create_engine(dbhost)
 db.echo = True 
@@ -42,7 +50,7 @@ while True:
 	obj = json.loads(message)[0]
 	mash = MashMessage(obj['id'], obj['key'], obj['song1'], obj['song2'], obj['status'])
 	try:	
-		print 'Processing: (id={0},key={1},song1={2},song2={3},status={4})'.format(mash.id, mash.key, mash.song1, mash.song2, mash.status)
+		logger.debug('Processing: (id={0},key={1},song1={2},song2={3},status={4})'.format(mash.id, mash.key, mash.song1, mash.song2, mash.status))
 		song1 = FileDownloader(remotehost, temp, mash.key, mash.song1)
 		song1.download()
 
@@ -51,12 +59,12 @@ while True:
 
 		mashoutput = '{0}/{1}/{2}'.format(temp, mash.key, 'output.mp3')
 
-		print 'KEY={0},SONG1={1},SONG2={2},STATUS={3},OUTPUT={4}'.format(mash.key, song1.output, song2.output, mash.status, mashoutput)
+		logger.debug('KEY={0},SONG1={1},SONG2={2},STATUS={3},OUTPUT={4}'.format(mash.key, song1.output, song2.output, mash.status, mashoutput))
 
 		tic = time.time()
 		afromb = AfromB(song1.output, song2.output, mashoutput).run(mix='0.9', envelope='env')
 		toc = time.time()
-		print "Elapsed time: %.3f sec" % float(toc-tic)
+		logger.debug("Elapsed time: %.3f sec" % float(toc-tic))
 
 		outputpath = os.path.join(uploadFolder, mash.key, 'output.mp3')	
 		p = subprocess.Popen(["scp", mashoutput, "{0}@{1}:{2}".format(cfg.outputhostuser, cfg.outputhostname, outputpath)])
@@ -70,4 +78,4 @@ while True:
 		mashupdate.status = 'failed'
 		mashupdate.error = ex
 		session.commit()
-		print 'Something failed processing: ', ex 
+		logger.error('Something failed processing:', ex) 
