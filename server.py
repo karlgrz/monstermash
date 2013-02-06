@@ -20,7 +20,7 @@ handler = logging.FileHandler('./log/server.log')
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
 handler.setFormatter(formatter)
 logger.addHandler(handler)
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 
 f = file('mash.cfg')
 cfg = Config(f)
@@ -78,4 +78,4 @@ while True:
 		mashupdate.status = 'failed'
 		mashupdate.error = err
 		session.commit()
-		logger.exception('Something failed processing:') 
+		logger.exception('Something failed processing key={0}:'.format(mash.key))
