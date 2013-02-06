@@ -62,17 +62,18 @@ def home():
 			session.commit()
 			socket.send_json(convert_mash_to_zeromq_message(mash))
 			return redirect(url_for('mash', key=mash.key))
-		except Exception as ex:
+		except Exception, err:
+			logger.exception('Something bad happened:')
+		finally:
 			session.rollback()
-			logger.error('Something bad happened:', ex)
 	return render_template('index.html')
 
 def convert_mash_to_zeromq_message(mash):
 	try:
 		obj = [{'id':mash.id, 'key':mash.key, 'song1':mash.song1, 'song2':mash.song2, 'status':mash.status}]
 		return json.dumps(obj)
-	except Exception as ex:
-		logger.error('Something bad happened: convert_mash_to_zeromq_message, mash={0}'.format(mash), ex)
+	except Exception, err:
+		logger.exception('Something bad happened: convert_mash_to_zeromq_message, mash={0}'.format(mash))
 
 def save_file(file, key):
 	try:
@@ -83,8 +84,8 @@ def save_file(file, key):
 				os.makedirs(folder)		
 			file.save(os.path.join(app.config['UPLOAD_FOLDER'], key, filename))
 			return filename
-	except Exception as ex:
-		logger.error('Something bad happened: save_file, key={0}, filename={1}'.format(key, file.filename), ex)
+	except Exception, err:
+		logger.exception('Something bad happened: save_file, key={0}, filename={1}'.format(key, file.filename))
 
 @app.route('/uploads/<key>/<filename>')
 def uploads(key, filename):
@@ -98,16 +99,16 @@ def mash(key):
 		print '/mash/{0}'.format(key)
 		mash = session.query(Mash).filter(Mash.key==key).first()
 		return render_template('mash.html', mash=mash)
-	except Exception as ex:
-		logger.error('Something bad happened: mash, key={0}'.format(key), ex)
+	except Exception, err:
+		logger.exception('Something bad happened: mash, key={0}'.format(key))
 
 @app.route('/list')
 def list():
 	try:
 		mashes = session.query(Mash).all()
 		return render_template('list.html', mashes=mashes)
-	except Exception as ex:
-		logger.error('Something bad happened: list', ex)
+	except Exception, err:
+		logger.exception('Something bad happened: list')
 		
 @app.route('/resubmit/<key>')
 def resubmit(key):
@@ -115,8 +116,8 @@ def resubmit(key):
 		mash = session.query(Mash).filter(Mash.key==key).first()
 		socket.send_json(convert_mash_to_zeromq_message(mash))
 		return redirect(url_for('mash', key=mash.key))
-	except Exception as ex:
-		logger.error('Something bad happened: resubmit, key={0}'.format(key), ex)
+	except Exception, err:
+		logger.exception('Something bad happened: resubmit, key={0}'.format(key))
 		
 if __name__ == '__main__':
 	app.debug = True

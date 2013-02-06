@@ -73,9 +73,9 @@ while True:
 		mashupdate = session.query(Mash).filter(Mash.id==mash.id).first()
 		mashupdate.status = 'ready'
 		session.commit()
-	except Exception as ex:
+	except Exception, err :
 		mashupdate = session.query(Mash).filter(Mash.id==mash.id).first()
 		mashupdate.status = 'failed'
-		mashupdate.error = ex
+		mashupdate.error = err
 		session.commit()
-		logger.error('Something failed processing:', ex) 
+		logger.exception('Something failed processing:') 
