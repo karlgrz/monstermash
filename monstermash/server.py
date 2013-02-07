@@ -22,7 +22,7 @@ handler.setFormatter(formatter)
 logger.addHandler(handler)
 logger.setLevel(logging.INFO)
 
-f = file('mash.cfg')
+f = file('../mash.cfg')
 cfg = Config(f)
 
 context = zmq.Context()
