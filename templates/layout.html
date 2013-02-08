@@ -16,8 +16,10 @@
 			<div class="container">
 				<div class="page-header">
 					<div style="float: left;">
-						<h1>MonsterMash</h1>
-						<p>Create mash ups of your favorite songs!</p>
+						<a href="{{ url_for('home') }}">
+							<h1>MonsterMash</h1>
+							<p>Create mash ups of your favorite songs!</p>
+						</a>
 						<img class="logo" src="{{ url_for('static', filename='images/monster.jpg') }}" style="width: 450px; height: 300px;"/>
 					</div>
 					<div style="float: right;">

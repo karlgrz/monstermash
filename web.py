@@ -1,7 +1,7 @@
 import os
-from flask import Flask, request, redirect, render_template, url_for, abort, session, send_from_directory, flash
+from flask import Flask, request, redirect, render_template, url_for, abort, session, send_from_directory, flash, Response
 import uuid
-#from flask.ext.login import LoginManager, login_user, logout_user, current_user, login_required
+from flask.ext.login import LoginManager, login_user, logout_user, current_user, login_required
 from werkzeug import secure_filename
 from flask.ext.assets import Environment
 from webassets.loaders import PythonLoader as PythonAssetsLoader
@@ -12,6 +12,7 @@ import json
 import logging
 from sqlalchemy import *
 from sqlalchemy.orm import sessionmaker
+from flask.ext.principal import Principal, RoleNeed, Permission 
 
 print __name__
 
@@ -57,30 +58,48 @@ Session = sessionmaker(bind=db)
 session = Session()
 logger.debug('Finished setting up db.')
 
-#logger.debug('Settingup login manager...')
-#login_manager = LoginManager()
-#login_manager.setup_app(app)
-#login_manager.login_view = 'login'
-#logger.debug('Finished setting up login manager.')
+logger.debug('Settingup login manager...')
+login_manager = LoginManager()
+login_manager.setup_app(app)
+login_manager.login_view = 'login'
+logger.debug('Finished setting up login manager.')
 
-#@login_manager.user_loader
-#def load_user(id):
-#	return User.query.get(int(id))
+logger.debug('Setting up principals...')
+principals = Principal()
+normal_role = RoleNeed('user')
+normal_permission = Permission(normal_role)
+principals._init_app(app)
+logger.debug('Finished setting up principals.')
 
-#@app.route('/login', methods = ['GET', 'POST'])
-#def login():
-#	form = LoginForm()
-#	if form.validate_on_submit():
-#		login_user(user)
-#		flash('Logged in successfully.')
-#		return redirect(request.args.get('next') or url_for('index'))
-#	return render_template('login.html', form=form)
+@login_manager.user_loader
+def load_user(id):
+	return session.query(User).filter(User.id==id).first()
 
-#@app.route('/logout')
-#@login_required
-#def logout():
-#	logout_user()
-#	return redirect(url_for('index'))
+@app.route("/login", methods=["GET", "POST"])
+def login():
+	if request.method == 'POST':
+		username = request.form['username']
+		password = request.form['password']
+		if authenticate(username, password):
+			user = session.query(User).filter(User.nickname==username).first()
+			if user is not None:
+				login_user(user)
+			next_arg = request.args.get('next')
+			next = '' if next_arg is None else next_arg
+			return redirect(next)
+		else:
+			return abort(401)
+	else:
+		return render_template('login.html') 
+def authenticate(username, password):
+	return True
+        
+@app.route("/logout")
+@login_required
+def logout():
+	logout_user()
+	flash('You have successfully logged out')
+	return render_template('logout.html')
 
 def allowed_file(filename):
 	return '.' in filename and \
@@ -96,8 +115,8 @@ def home():
 			song2 = request.files['song2']
 			song2Filename = save_file(song2, key)
 			status = 'uploaded'
-			mash = Mash(key, song1Filename, song2Filename, status)	
-			mashupdate = session.query(Mash).filter(Mash.id==mash.id).first()
+			userid = 0 if current_user.is_anonymous() else int(current_user.id)
+			mash = Mash(key, userid, song1Filename, song2Filename, status)	
 			session.add(mash)
 			session.commit()
 			socket.send_json(convert_mash_to_zeromq_message(mash))
@@ -106,7 +125,6 @@ def home():
 			logger.exception('Something bad happened:')
 		finally:
 			session.rollback()
-	logger.debug('IN HOME!!!')
 	return render_template('index.html')
 
 def convert_mash_to_zeromq_message(mash):
@@ -130,36 +148,43 @@ def save_file(file, key):
 
 @app.route('/uploads/<key>/<filename>')
 def uploads(key, filename):
-	print '/uploads/{0}/{1}'.format(key, filename)
+	logger.debug('/uploads/{0}/{1}'.format(key, filename))
 	folder = os.path.join(cfg.UPLOAD_FOLDER, key)
 	return send_from_directory(folder, filename)
 
 @app.route('/mash/<key>')
 def mash(key):
 	try:
-		print '/mash/{0}'.format(key)
+		logger.debug('/mash/{0}'.format(key))
 		mash = session.query(Mash).filter(Mash.key==key).first()
 		return render_template('mash.html', mash=mash)
 	except Exception, err:
 		logger.exception('Something bad happened: mash, key={0}'.format(key))
 
 @app.route('/list')
-#@login_required
 def list():
 	try:
-		mashes = session.query(Mash).all()
+		userid = 0 if current_user.is_anonymous() else int(current_user.id)
+		mashes = session.query(Mash).filter(User.id == userid)
 		return render_template('list.html', mashes=mashes)
 	except Exception, err:
 		logger.exception('Something bad happened: list')
 		
 @app.route('/resubmit/<key>')
+@login_required
 def resubmit(key):
 	try:
-		mash = session.query(Mash).filter(Mash.key==key).first()
+		userid = 0 if current_user.is_anonymous() else int(current_user.id)
+		mash = session.query(Mash).filter(Mash.key==key).filter(Mash.user_id==userid).first()
 		socket.send_json(convert_mash_to_zeromq_message(mash))
 		return redirect(url_for('mash', key=mash.key))
 	except Exception, err:
 		logger.exception('Something bad happened: resubmit, key={0}'.format(key))
+
+@app.errorhandler(403)
+def page_not_found(e):
+	session['redirected_from'] = request.url
+	return redirect(url_for('login'))
 
 if __name__ == '__main__':
 	app.debug = True

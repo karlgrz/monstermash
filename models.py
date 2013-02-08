@@ -8,20 +8,22 @@ class Mash(Base):
 	__tablename__ = 'mash'
 
 	id = Column(Integer, primary_key=True)
-	#userid = Column(String, ForeignKey('user.id'))
 	key = Column(String)
+	user_id = Column(String, ForeignKey('user.id'))
 	song1 = Column(String)
 	song2 = Column(String)
 	status = Column(String)
+	user = relationship('User')
 
-	def __init__(self, key, song1, song2, status):
+	def __init__(self, key, user_id, song1, song2, status):
 		self.key = key
+		self.user_id = user_id
 		self.song1 = song1
 		self.song2 = song2
 		self.status = status
 	
 	def __repr__(self):
-		return "<Mash('{0}','{1}','{2}','{3}')>".format(self.key,self.song1,self.song2,self.status)
+		return "<Mash('{0}','{1}','{2}','{3}','{4}')>".format(self.key,self.user_id,self.song1,self.song2,self.status)
 
 ROLE_USER = 0
 ROLE_ADMIN = 1
@@ -30,16 +32,15 @@ class User(Base):
 	__tablename__ = 'user'
 
 	id = Column(Integer, primary_key=True)
-	nickname = Column(String, unique=True)
+	username = Column(String, unique=True)
 	email = Column(String, unique=True)
 	role = Column(SmallInteger, default=ROLE_USER)
-	#mashes = relationship('Mash', backref='user', lazy='dynamic')
+	mashes = relationship('Mash')
 
-	def __init__(self, nickname, email, role, mashes):
-		self.nickname = nickname
+	def __init__(self, username, email, role):
+		self.username = username
 		self.email = email
 		self.role = role
-		self.mashes = mashes
 
 	def is_authenticated(self):
 		return True
@@ -54,5 +55,5 @@ class User(Base):
 		return unicode(self.id)
 
 	def __repr__(self):
-		return '<User {0}>'.format(self.nickname)
+		return '<User {0}>'.format(self.username)
 
