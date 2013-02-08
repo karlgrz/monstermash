@@ -1,30 +1,39 @@
-from flask_sqlalchemy import SQLAlchemy
-from monstermash import app
+from sqlalchemy import *
+from sqlalchemy.orm import relationship
+from sqlalchemy.ext.declarative import declarative_base
 
-db = SQLAlchemy(app)
+Base = declarative_base()
 
-class Mash(db.Model):
-	id = db.Column(db.Integer, primary_key=True)
-	key = db.Column(db.String)
-	song1 = db.Column(db.String)
-	song2 = db.Column(db.String)
-	status = db.Column(db.String)
+class Mash(Base):
+	__tablename__ = 'mash'
+
+	id = Column(Integer, primary_key=True)
+	#userid = Column(String, ForeignKey('user.id'))
+	key = Column(String)
+	song1 = Column(String)
+	song2 = Column(String)
+	status = Column(String)
 
 	def __init__(self, key, song1, song2, status):
 		self.key = key
 		self.song1 = song1
 		self.song2 = song2
 		self.status = status
+	
+	def __repr__(self):
+		return "<Mash('{0}','{1}','{2}','{3}')>".format(self.key,self.song1,self.song2,self.status)
 
 ROLE_USER = 0
 ROLE_ADMIN = 1
 
-class User(db.Model):
-	id = db.Column(db.Integer, primary_key=True)
-	nickname = db.Column(db.String, unique=True)
-	email = db.Column(db.String, unique=True)
-	role = db.Column(db.SmallInteger, default=ROLE_USER)
-	mashes = db.relationship('Mash', backref='user', lazy='dynamic')
+class User(Base):
+	__tablename__ = 'user'
+
+	id = Column(Integer, primary_key=True)
+	nickname = Column(String, unique=True)
+	email = Column(String, unique=True)
+	role = Column(SmallInteger, default=ROLE_USER)
+	#mashes = relationship('Mash', backref='user', lazy='dynamic')
 
 	def __init__(self, nickname, email, role, mashes):
 		self.nickname = nickname
@@ -46,3 +55,4 @@ class User(db.Model):
 
 	def __repr__(self):
 		return '<User {0}>'.format(self.nickname)
+

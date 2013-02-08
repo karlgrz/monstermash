@@ -12,7 +12,7 @@ import os
 from config import Config
 from sqlalchemy import *
 from sqlalchemy.orm import sessionmaker
-from modelsserver import *
+from models import *
 import logging
 
 logger = logging.getLogger('server')

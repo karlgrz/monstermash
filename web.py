@@ -48,7 +48,7 @@ for name, bundle in assets_loader.load_bundles().iteritems():
 	assets_env.register(name, bundle)
 logger.debug('Finished setting up assets_env.')
 
-from modelsserver import *
+from models import *
 
 logger.debug('Setting up db...')
 db = create_engine(cfg.SQLALCHEMY_DATABASE_URI)
