@@ -81,7 +81,7 @@ def login():
 		username = request.form['username']
 		password = request.form['password']
 		if authenticate(username, password):
-			user = session.query(User).filter(User.nickname==username).first()
+			user = session.query(User).filter(User.username==username).first()
 			if user is not None:
 				login_user(user)
 			next_arg = request.args.get('next')
