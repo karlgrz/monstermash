@@ -16,13 +16,16 @@ from modelsserver import *
 import logging
 
 logger = logging.getLogger('server')
-handler = logging.FileHandler('./log/server.log')
+file_handler = logging.FileHandler('log/server.log')
+console_handler = logging.StreamHandler()
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
-handler.setFormatter(formatter)
-logger.addHandler(handler)
-logger.setLevel(logging.INFO)
+file_handler.setFormatter(formatter)
+console_handler.setFormatter(formatter)
+logger.addHandler(file_handler)
+logger.addHandler(console_handler)
+logger.setLevel(logging.DEBUG)
 
-f = file('../mash.cfg')
+f = file('mash.cfg')
 cfg = Config(f)
 
 context = zmq.Context()
