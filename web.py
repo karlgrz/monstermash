@@ -165,7 +165,7 @@ def mash(key):
 def list():
 	try:
 		userid = 0 if current_user.is_anonymous() else int(current_user.id)
-		mashes = session.query(Mash).filter(User.id == userid)
+		mashes = session.query(Mash).filter(Mash.user_id == userid)
 		return render_template('list.html', mashes=mashes)
 	except Exception, err:
 		logger.exception('Something bad happened: list')
