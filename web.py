@@ -162,6 +162,7 @@ def mash(key):
 		logger.exception('Something bad happened: mash, key={0}'.format(key))
 
 @app.route('/list')
+@login_required
 def list():
 	try:
 		userid = 0 if current_user.is_anonymous() else int(current_user.id)
