@@ -1,0 +1,90 @@
+2013-02-07 18:09:53,208 DEBUG localmq=tcp://0.0.0.0:5000
+2013-02-07 18:09:53,209 DEBUG temp=mash-temp
+2013-02-07 18:09:53,209 DEBUG uploadFolder=~/workspace/monstermash/upload
+2013-02-07 18:09:53,209 DEBUG remotehost=http://127.0.0.1:8000
+2013-02-07 18:09:53,209 DEBUG dbhost=sqlite:///mash.db
+2013-02-07 18:10:11,222 DEBUG Processing: (id=1,key=6fcea3aa077b4c95b3a9c4c314d0510f,song1=01_Hate_Conquer_Dstroy_REPEAT.mp3,song2=Excitebike.mp4.mp3,status=uploaded)
+2013-02-07 18:10:11,282 DEBUG KEY=6fcea3aa077b4c95b3a9c4c314d0510f,SONG1=mash-temp/6fcea3aa077b4c95b3a9c4c314d0510f/01_Hate_Conquer_Dstroy_REPEAT.mp3,SONG2=mash-temp/6fcea3aa077b4c95b3a9c4c314d0510f/Excitebike.mp4.mp3,STATUS=uploaded,OUTPUT=mash-temp/6fcea3aa077b4c95b3a9c4c314d0510f/output.mp3
+2013-02-07 18:10:19,640 DEBUG Elapsed time: 8.357 sec
+2013-02-07 18:33:14,917 DEBUG localmq=tcp://0.0.0.0:5000
+2013-02-07 18:33:14,919 DEBUG temp=mash-temp
+2013-02-07 18:33:14,919 DEBUG uploadFolder=~/workspace/monstermash/upload
+2013-02-07 18:33:14,919 DEBUG remotehost=http://127.0.0.1:8000
+2013-02-07 18:33:14,919 DEBUG dbhost=sqlite:///mash.db
+2013-02-07 18:33:24,379 DEBUG Processing: (id=1,key=757a08cd39d74ae7a2e43f6b5343acf8,song1=Excitebike.mp4.mp3,song2=IceHockey.mp4.mp3,status=uploaded)
+2013-02-07 18:33:24,412 DEBUG KEY=757a08cd39d74ae7a2e43f6b5343acf8,SONG1=mash-temp/757a08cd39d74ae7a2e43f6b5343acf8/Excitebike.mp4.mp3,SONG2=mash-temp/757a08cd39d74ae7a2e43f6b5343acf8/IceHockey.mp4.mp3,STATUS=uploaded,OUTPUT=mash-temp/757a08cd39d74ae7a2e43f6b5343acf8/output.mp3
+2013-02-07 18:33:30,930 DEBUG Elapsed time: 6.518 sec
+2013-02-08 02:06:47,334 DEBUG localmq=tcp://0.0.0.0:5000
+2013-02-08 02:06:47,335 DEBUG temp=mash-temp
+2013-02-08 02:06:47,335 DEBUG uploadFolder=~/workspace/monstermash/upload
+2013-02-08 02:06:47,336 DEBUG remotehost=http://127.0.0.1:8000
+2013-02-08 02:06:47,336 DEBUG dbhost=sqlite:///mash.db
+2013-02-08 02:14:52,148 DEBUG Processing: (id=2,key=1,song1=01_Hate_Conquer_Dstroy_REPEAT.mp3,song2=BennyHill.mp3,status=uploaded)
+2013-02-08 02:14:52,172 DEBUG KEY=1,SONG1=mash-temp/1/01_Hate_Conquer_Dstroy_REPEAT.mp3,SONG2=mash-temp/1/BennyHill.mp3,STATUS=uploaded,OUTPUT=mash-temp/1/output.mp3
+2013-02-08 02:14:52,319 ERROR Something failed processing key=1:
+Traceback (most recent call last):
+  File "server.py", line 68, in <module>
+    afromb = AfromB(song1.output, song2.output, mashoutput).run(mix='0.9', envelope='env')
+  File "/home/karl/workspace/monstermash/afromb.py", line 34, in __init__
+    self.input_a = audio.LocalAudioFile(input_filename_a)
+  File "/usr/local/lib/python2.7/dist-packages/echonest/remix/audio.py", line 888, in __init__
+    sampleRate=sampleRate, numChannels=numChannels)
+  File "/usr/local/lib/python2.7/dist-packages/echonest/remix/audio.py", line 314, in __init__
+    self.load()
+  File "/usr/local/lib/python2.7/dist-packages/echonest/remix/audio.py", line 336, in load
+    w = wave.open(file_to_read, 'r')
+  File "/usr/lib/python2.7/wave.py", line 498, in open
+    return Wave_read(f)
+  File "/usr/lib/python2.7/wave.py", line 163, in __init__
+    self.initfp(f)
+  File "/usr/lib/python2.7/wave.py", line 128, in initfp
+    self._file = Chunk(file, bigendian = 0)
+  File "/usr/lib/python2.7/chunk.py", line 63, in __init__
+    raise EOFError
+EOFError
+2013-02-08 02:19:12,255 DEBUG Processing: (id=1,key=bf5e9030f7fd46f194f4a42e48fdbaf3,song1=01_Hate_Conquer_Dstroy_REPEAT.mp3,song2=BennyHill.mp3,status=uploaded)
+2013-02-08 02:19:12,319 DEBUG KEY=bf5e9030f7fd46f194f4a42e48fdbaf3,SONG1=mash-temp/bf5e9030f7fd46f194f4a42e48fdbaf3/01_Hate_Conquer_Dstroy_REPEAT.mp3,SONG2=mash-temp/bf5e9030f7fd46f194f4a42e48fdbaf3/BennyHill.mp3,STATUS=uploaded,OUTPUT=mash-temp/bf5e9030f7fd46f194f4a42e48fdbaf3/output.mp3
+2013-02-08 02:19:26,163 DEBUG Elapsed time: 13.844 sec
+2013-02-08 10:10:34,366 DEBUG localmq=tcp://0.0.0.0:5000
+2013-02-08 10:10:34,367 DEBUG temp=mash-temp
+2013-02-08 10:10:34,367 DEBUG uploadFolder=~/workspace/monstermash/upload
+2013-02-08 10:10:34,368 DEBUG remotehost=http://127.0.0.1:8000
+2013-02-08 10:10:34,368 DEBUG dbhost=sqlite:///mash.db
+2013-02-08 10:10:34,391 DEBUG Processing: (id=1,key=749df2babf01425e95d5b44481a7a846,song1=Excitebike.mp4.mp3,song2=IceHockey.mp4.mp3,status=uploaded)
+2013-02-08 10:10:34,424 DEBUG KEY=749df2babf01425e95d5b44481a7a846,SONG1=mash-temp/749df2babf01425e95d5b44481a7a846/Excitebike.mp4.mp3,SONG2=mash-temp/749df2babf01425e95d5b44481a7a846/IceHockey.mp4.mp3,STATUS=uploaded,OUTPUT=mash-temp/749df2babf01425e95d5b44481a7a846/output.mp3
+2013-02-08 10:10:40,158 DEBUG Elapsed time: 5.733 sec
+2013-02-08 10:11:09,835 DEBUG Processing: (id=2,key=7155a38408ff42b4a3ed304620ef2791,song1=01_Hate_Conquer_Dstroy_REPEAT.mp3,song2=Excitebike.mp4.mp3,status=uploaded)
+2013-02-08 10:11:09,849 DEBUG KEY=7155a38408ff42b4a3ed304620ef2791,SONG1=mash-temp/7155a38408ff42b4a3ed304620ef2791/01_Hate_Conquer_Dstroy_REPEAT.mp3,SONG2=mash-temp/7155a38408ff42b4a3ed304620ef2791/Excitebike.mp4.mp3,STATUS=uploaded,OUTPUT=mash-temp/7155a38408ff42b4a3ed304620ef2791/output.mp3
+2013-02-08 10:11:16,940 DEBUG Elapsed time: 7.090 sec
+2013-02-08 10:19:26,217 DEBUG Processing: (id=3,key=7f9dd8c333484eee9eabaa3748c26119,song1=01_Hate_Conquer_Dstroy_REPEAT.mp3,song2=BennyHill.mp3,status=uploaded)
+2013-02-08 10:19:26,264 DEBUG KEY=7f9dd8c333484eee9eabaa3748c26119,SONG1=mash-temp/7f9dd8c333484eee9eabaa3748c26119/01_Hate_Conquer_Dstroy_REPEAT.mp3,SONG2=mash-temp/7f9dd8c333484eee9eabaa3748c26119/BennyHill.mp3,STATUS=uploaded,OUTPUT=mash-temp/7f9dd8c333484eee9eabaa3748c26119/output.mp3
+2013-02-08 10:19:40,824 DEBUG Elapsed time: 14.559 sec
+2013-02-08 11:07:05,974 DEBUG localmq=tcp://0.0.0.0:5000
+2013-02-08 11:07:05,975 DEBUG temp=mash-temp
+2013-02-08 11:07:05,975 DEBUG uploadFolder=~/workspace/monstermash/upload
+2013-02-08 11:07:05,975 DEBUG remotehost=http://127.0.0.1:8000
+2013-02-08 11:07:05,975 DEBUG dbhost=sqlite:///mash.db
+2013-02-08 11:07:50,711 DEBUG Processing: (id=3,key=1f7a1f50570a42cba971f3d9c549a788,song1=01_Hate_Conquer_Dstroy_REPEAT.mp3,song2=BennyHill.mp3,status=uploaded)
+2013-02-08 11:07:50,763 DEBUG KEY=1f7a1f50570a42cba971f3d9c549a788,SONG1=mash-temp/1f7a1f50570a42cba971f3d9c549a788/01_Hate_Conquer_Dstroy_REPEAT.mp3,SONG2=mash-temp/1f7a1f50570a42cba971f3d9c549a788/BennyHill.mp3,STATUS=uploaded,OUTPUT=mash-temp/1f7a1f50570a42cba971f3d9c549a788/output.mp3
+2013-02-08 11:08:04,546 DEBUG Elapsed time: 13.782 sec
+2013-02-09 17:08:07,295 DEBUG localmq=tcp://0.0.0.0:5000
+2013-02-09 17:08:07,295 DEBUG temp=mash-temp
+2013-02-09 17:08:07,296 DEBUG uploadFolder=~/workspace/monstermash/upload
+2013-02-09 17:08:07,296 DEBUG remotehost=http://127.0.0.1:8000
+2013-02-09 17:08:07,296 DEBUG dbhost=sqlite:///mash.db
+2013-02-09 17:08:10,378 DEBUG Processing: (id=1,key=a08e89e8ab2a4dd7b5136ceea4f77b8c,song1=01_Hate_Conquer_Dstroy_REPEAT.mp3,song2=BennyHill.mp3,status=uploaded)
+2013-02-09 17:08:10,485 DEBUG KEY=a08e89e8ab2a4dd7b5136ceea4f77b8c,SONG1=mash-temp/a08e89e8ab2a4dd7b5136ceea4f77b8c/01_Hate_Conquer_Dstroy_REPEAT.mp3,SONG2=mash-temp/a08e89e8ab2a4dd7b5136ceea4f77b8c/BennyHill.mp3,STATUS=uploaded,OUTPUT=mash-temp/a08e89e8ab2a4dd7b5136ceea4f77b8c/output.mp3
+2013-02-09 17:08:26,246 DEBUG Elapsed time: 15.760 sec
+2013-02-12 08:39:50,323 DEBUG localmq=tcp://0.0.0.0:5000
+2013-02-12 08:39:50,325 DEBUG temp=mash-temp
+2013-02-12 08:39:50,326 DEBUG uploadFolder=~/workspace/monstermash/upload
+2013-02-12 08:39:50,326 DEBUG remotehost=http://127.0.0.1:8000
+2013-02-12 08:39:50,326 DEBUG dbhost=sqlite:///mash.db
+2013-02-12 08:48:47,672 DEBUG localmq=tcp://0.0.0.0:5000
+2013-02-12 08:48:47,673 DEBUG temp=mash-temp
+2013-02-12 08:48:47,673 DEBUG uploadFolder=~/workspace/monstermash/upload
+2013-02-12 08:48:47,673 DEBUG remotehost=http://127.0.0.1:8000
+2013-02-12 08:48:47,673 DEBUG dbhost=sqlite:///mash.db
+2013-02-12 08:48:59,329 DEBUG Processing: (id=5,key=1155acc4ad034299a5c448a8245faab0,song1=01_Hate_Conquer_Dstroy_REPEAT.mp3,song2=BennyHill.mp3,status=uploaded)
+2013-02-12 08:48:59,398 DEBUG KEY=1155acc4ad034299a5c448a8245faab0,SONG1=mash-temp/1155acc4ad034299a5c448a8245faab0/01_Hate_Conquer_Dstroy_REPEAT.mp3,SONG2=mash-temp/1155acc4ad034299a5c448a8245faab0/BennyHill.mp3,STATUS=uploaded,OUTPUT=mash-temp/1155acc4ad034299a5c448a8245faab0/output.mp3
+2013-02-12 08:49:16,041 DEBUG Elapsed time: 16.643 sec
