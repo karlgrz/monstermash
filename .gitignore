@@ -2,8 +2,9 @@ log/
 tmp/
 *.pyc
 *.db
-monstermash/static/.webassets-cache
+.webassets-cache
+gen/
 upload/
-monstermash/static/gen/
+gen/
 *.mp3
 mash-temp/
