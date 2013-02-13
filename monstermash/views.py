@@ -3,15 +3,7 @@ from flask import Flask, request, redirect, render_template, url_for, abort, ses
 import uuid
 from flask.ext.login import LoginManager, login_user, logout_user, current_user, login_required
 from werkzeug import secure_filename
-#from flask.ext.assets import Environment
-#from webassets.loaders import PythonLoader as PythonAssetsLoader
-#from config import Config
-#import assets
-#import zmq
 import json
-#import logging
-#from sqlalchemy import *
-#from sqlalchemy.orm import sessionmaker
 from flask.ext.principal import identity_changed, current_app, Identity, AnonymousIdentity, RoleNeed, UserNeed, identity_loaded
 from __init__ import app, logger, db, db_session, login_manager, cfg, socket, admin_permission
 from models import *
@@ -92,10 +84,10 @@ def save_file(file, key):
 	try:
 		if file and allowed_file(file.filename):
 			filename = secure_filename(file.filename)
-			folder = os.path.join(cfg.UPLOAD_FOLDER, key)
+			folder = os.path.join(app.root_path, cfg.UPLOAD_FOLDER, key)
 			if not os.path.exists(folder):
 				os.makedirs(folder)		
-			file.save(os.path.join(cfg.UPLOAD_FOLDER, key, filename))
+			file.save(os.path.join(folder, filename))
 			return filename
 	except Exception, err:
 		logger.exception('Something bad happened: save_file, key={0}, filename={1}'.format(key, file.filename))
@@ -103,7 +95,8 @@ def save_file(file, key):
 @app.route('/uploads/<key>/<filename>')
 def uploads(key, filename):
 	logger.debug('/uploads/{0}/{1}'.format(key, filename))
-	folder = os.path.join(cfg.UPLOAD_FOLDER, key)
+	folder = os.path.join(app.root_path, cfg.UPLOAD_FOLDER, key)
+	logger.debug('folder={0}, filename={1}'.format(folder, filename))
 	return send_from_directory(folder, filename)
 
 @app.route('/mash/<key>')

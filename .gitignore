@@ -2,7 +2,7 @@ log/
 tmp/
 *.pyc
 *.db
-monstermash/static/.webassets-cache/
+monstermash/static/.webassets-cache
 upload/
 monstermash/static/gen/
 *.mp3
