@@ -33,12 +33,14 @@ class User(Base):
 
 	id = Column(Integer, primary_key=True)
 	username = Column(String, unique=True)
+	password = Column(String)
 	email = Column(String, unique=True)
 	role = Column(SmallInteger, default=ROLE_USER)
 	mashes = relationship('Mash')
 
-	def __init__(self, username, email, role):
+	def __init__(self, username, password, email, role):
 		self.username = username
+		self.password = password
 		self.email = email
 		self.role = role
 

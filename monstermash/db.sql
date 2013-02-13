@@ -2,10 +2,11 @@
 create table user(
     id integer primary key,
     username TEXT unique,
+	password TEXT,
     email TEXT unique,
     role small integer default 0
 );
-insert into user (id, username, email, role) values (0, 'Anonymous', 'Anonymous', 0); 
+insert into user (id, username, password, email, role) values (0, 'Anonymous', '', 'Anonymous', 0); 
 
 create table mash(
     id integer primary key, 
@@ -22,13 +23,14 @@ CREATE TABLE user
 (
 	`id` int(11) NOT NULL AUTO_INCREMENT, 	
 	`username` varchar(256) NOT NULL, 
+	`password` varchar(128) NOT NULL,
 	`email` varchar(256), 
 	`role` smallint default 0, 
 	PRIMARY KEY (`id`), 
 	KEY `username` (`username`)
 );
 
-insert into user (id, username, email, role) values (0, 'Anonymous', 'Anonymous', 0);
+insert into user (id, username, password, email, role) values (0, 'Anonymous', '', 'Anonymous', 0);
 
 create table mash 
 (

@@ -12,39 +12,48 @@ import json
 #import logging
 #from sqlalchemy import *
 #from sqlalchemy.orm import sessionmaker
-#from flask.ext.principal import Principal, RoleNeed, Permission 
-from __init__ import app, logger, db, db_session, login_manager, cfg, socket
+from flask.ext.principal import identity_changed, current_app, Identity, AnonymousIdentity, RoleNeed, UserNeed, identity_loaded
+from __init__ import app, logger, db, db_session, login_manager, cfg, socket, admin_permission
 from models import *
 
-#@login_manager.user_loader
-#def load_user(id):
-#	return session.query(User).filter(User.id==id).first()
+@login_manager.user_loader
+def load_user(id):
+	return db_session.query(User).filter(User.id==id).first()
 
-#@app.route("/login", methods=["GET", "POST"])
-#def login():
-#	if request.method == 'POST':
-#		username = request.form['username']
-#		password = request.form['password']
-#		if authenticate(username, password):
-#			user = session.query(User).filter(User.username==username).first()
-#			if user is not None:
-#				login_user(user)
-#			next_arg = request.args.get('next')
-#			next = '' if next_arg is None else next_arg
-#			return redirect(next)
-#		else:
-#			return abort(401)
-#	else:
-#		return render_template('login.html') 
-#def authenticate(username, password):
-#	return True
+@app.route("/login", methods=["GET", "POST"])
+def login():
+	if request.method == 'POST':
+		username = request.form['username']
+		password = request.form['password']
+		if authenticate(username, password):
+			user = db_session.query(User).filter(User.username==username).first()
+			if user is not None:
+				login_user(user)
+				identity_changed.send(current_app._get_current_object(), identity=Identity(user.id))
+			next_arg = request.args.get('next')
+			next = '' if next_arg is None else next_arg
+			return redirect(next or '/')
+		else:
+			return abort(401)
+	else:
+		return render_template('login.html') 
+
+def authenticate(username, password):
+	user = db_session.query(User).filter(User.username==username).first()
+	return user.password == password
         
-#@app.route("/logout")
-#@login_required
-#def logout():
-#	logout_user()
-#	flash('You have successfully logged out')
-#	return render_template('logout.html')
+@app.route("/logout")
+@login_required
+def logout():
+	logout_user()
+	for key in ('identity.name', 'identity.auth_type'):
+		session.pop(key, None)
+	
+	identity_changed.send(current_app._get_current_object(), 
+						  identity=AnonymousIdentity())
+
+	flash('You have successfully logged out')
+	return render_template('logout.html')
 
 def allowed_file(filename):
 	return '.' in filename and \
@@ -106,28 +115,36 @@ def mash(key):
 	except Exception, err:
 		logger.exception('Something bad happened: mash, key={0}'.format(key))
 
-#@app.route('/list')
-#@login_required
-#def list():
-#	try:
-#		userid = 0 if current_user.is_anonymous() else int(current_user.id)
-#		mashes = session.query(Mash).filter(Mash.user_id == userid)
-#		return render_template('list.html', mashes=mashes)
-#	except Exception, err:
-#		logger.exception('Something bad happened: list')
+@app.route('/list')
+@admin_permission.require(http_exception=403)
+def list():
+	try:
+		mashes = db_session.query(Mash)
+		return render_template('list.html', mashes=mashes)
+	except Exception, err:
+		logger.exception('Something bad happened: list')
 		
-#@app.route('/resubmit/<key>')
-#@login_required
-#def resubmit(key):
-#	try:
-#		userid = 0 if current_user.is_anonymous() else int(current_user.id)
-#		mash = session.query(Mash).filter(Mash.key==key).filter(Mash.user_id==userid).first()
-#		socket.send_json(convert_mash_to_zeromq_message(mash))
-#		return redirect(url_for('mash', key=mash.key))
-#	except Exception, err:
-#		logger.exception('Something bad happened: resubmit, key={0}'.format(key))
+@app.route('/resubmit/<key>')
+@admin_permission.require(http_exception=403)
+def resubmit(key):
+	try:
+		mash = db_session.query(Mash).filter(Mash.key==key).first()
+		socket.send_json(convert_mash_to_zeromq_message(mash))
+		return redirect(url_for('mash', key=mash.key))
+	except Exception, err:
+		logger.exception('Something bad happened: resubmit, key={0}'.format(key))
 
-#@app.errorhandler(403)
-#def page_not_found(e):
-#	session['redirected_from'] = request.url
-#	return redirect(url_for('login'))
+@identity_loaded.connect_via(app)
+def on_identity_loaded(sender, identity):
+	identity.user = current_user
+
+	if hasattr(current_user, 'id'):
+		identity.provides.add(UserNeed(current_user.id))
+
+	if hasattr(current_user, 'role'):
+		identity.provides.add(RoleNeed(current_user.role))
+
+@app.errorhandler(403)
+def page_not_found(e):
+	session['redirected_from'] = request.url
+	return redirect(url_for('login'))

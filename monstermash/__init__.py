@@ -66,9 +66,12 @@ logger.debug('Finished setting up login manager.')
 
 logger.debug('Setting up principals...')
 principals = Principal()
-normal_role = RoleNeed('user')
-normal_permission = Permission(normal_role)
+user_role = RoleNeed(ROLE_USER)
+user_permission = Permission(user_role)
+admin_role = RoleNeed(ROLE_ADMIN)
+admin_permission = Permission(admin_role)
 principals._init_app(app)
+
 logger.debug('Finished setting up principals.')
 
 from views import *

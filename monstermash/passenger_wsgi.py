@@ -7,7 +7,7 @@ sys.path.insert(1,ROOT)
 if sys.executable != INTERP:
    os.execl(INTERP, INTERP, *sys.argv)
 
-from web import app as application
+from monstermash import app as application
 
 #from werkzeug_debugger_appengine import get_debugged_app
 #application = get_debugged_app(application)
