@@ -88,3 +88,19 @@ EOFError
 2013-02-12 08:48:59,329 DEBUG Processing: (id=5,key=1155acc4ad034299a5c448a8245faab0,song1=01_Hate_Conquer_Dstroy_REPEAT.mp3,song2=BennyHill.mp3,status=uploaded)
 2013-02-12 08:48:59,398 DEBUG KEY=1155acc4ad034299a5c448a8245faab0,SONG1=mash-temp/1155acc4ad034299a5c448a8245faab0/01_Hate_Conquer_Dstroy_REPEAT.mp3,SONG2=mash-temp/1155acc4ad034299a5c448a8245faab0/BennyHill.mp3,STATUS=uploaded,OUTPUT=mash-temp/1155acc4ad034299a5c448a8245faab0/output.mp3
 2013-02-12 08:49:16,041 DEBUG Elapsed time: 16.643 sec
+2013-02-12 18:08:26,921 DEBUG localmq=tcp://0.0.0.0:5000
+2013-02-12 18:08:26,922 DEBUG temp=mash-temp
+2013-02-12 18:08:26,922 DEBUG uploadFolder=~/workspace/monstermash/upload
+2013-02-12 18:08:26,922 DEBUG remotehost=http://127.0.0.1:8000
+2013-02-12 18:08:26,923 DEBUG dbhost=sqlite:///mash.db
+2013-02-12 18:08:51,478 DEBUG Processing: (id=1,key=79b589230a7445e5b17cc7e5503e1b81,song1=01_Hate_Conquer_Dstroy_REPEAT.mp3,song2=BennyHill.mp3,status=uploaded)
+2013-02-12 18:08:51,554 DEBUG KEY=79b589230a7445e5b17cc7e5503e1b81,SONG1=mash-temp/79b589230a7445e5b17cc7e5503e1b81/01_Hate_Conquer_Dstroy_REPEAT.mp3,SONG2=mash-temp/79b589230a7445e5b17cc7e5503e1b81/BennyHill.mp3,STATUS=uploaded,OUTPUT=mash-temp/79b589230a7445e5b17cc7e5503e1b81/output.mp3
+2013-02-12 18:09:08,695 DEBUG Elapsed time: 17.141 sec
+2013-02-12 18:10:33,225 DEBUG localmq=tcp://0.0.0.0:5000
+2013-02-12 18:10:33,226 DEBUG temp=mash-temp
+2013-02-12 18:10:33,226 DEBUG uploadFolder=~/workspace/monstermash/monstermash/upload
+2013-02-12 18:10:33,226 DEBUG remotehost=http://127.0.0.1:8000
+2013-02-12 18:10:33,226 DEBUG dbhost=sqlite:///mash.db
+2013-02-12 18:10:56,858 DEBUG Processing: (id=1,key=79b589230a7445e5b17cc7e5503e1b81,song1=01_Hate_Conquer_Dstroy_REPEAT.mp3,song2=BennyHill.mp3,status=ready)
+2013-02-12 18:10:56,936 DEBUG KEY=79b589230a7445e5b17cc7e5503e1b81,SONG1=mash-temp/79b589230a7445e5b17cc7e5503e1b81/01_Hate_Conquer_Dstroy_REPEAT.mp3,SONG2=mash-temp/79b589230a7445e5b17cc7e5503e1b81/BennyHill.mp3,STATUS=ready,OUTPUT=mash-temp/79b589230a7445e5b17cc7e5503e1b81/output.mp3
+2013-02-12 18:11:12,461 DEBUG Elapsed time: 15.524 sec

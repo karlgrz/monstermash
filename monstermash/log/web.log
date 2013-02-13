@@ -8789,3 +8789,335 @@ NameError: global name 'json' is not defined
 2013-02-12 18:01:57,867 DEBUG Setting up principals...
 2013-02-12 18:01:57,868 DEBUG Finished setting up principals.
 2013-02-12 18:01:57,868 DEBUG Finished setting up principals.
+2013-02-12 18:08:22,576 DEBUG localmq : tcp://0.0.0.0:5000
+2013-02-12 18:08:22,576 DEBUG temp : mash-temp
+2013-02-12 18:08:22,576 DEBUG uploadFolder : ~/workspace/monstermash/upload
+2013-02-12 18:08:22,576 DEBUG remotehost : http://127.0.0.1:8000
+2013-02-12 18:08:22,576 DEBUG outputhostuser : karl
+2013-02-12 18:08:22,576 DEBUG outputhostname : karl-Virtualbox
+2013-02-12 18:08:22,577 DEBUG dbhost : sqlite:///mash.db
+2013-02-12 18:08:22,577 DEBUG SECRET_KEY : IUHWEUHWIUHE@(@(*YWG
+2013-02-12 18:08:22,577 DEBUG UPLOAD_FOLDER : upload
+2013-02-12 18:08:22,577 DEBUG MASH_FOLDER : mash
+2013-02-12 18:08:22,577 DEBUG REMOTEPUSH : tcp://0.0.0.0:5000
+2013-02-12 18:08:22,577 DEBUG SQLALCHEMY_DATABASE_URI : sqlite:///mash.db
+2013-02-12 18:08:22,577 DEBUG ASSETS_DEBUG : True
+2013-02-12 18:08:22,577 DEBUG DEBUG : True
+2013-02-12 18:08:22,577 DEBUG SQLALCHEMY_ECHO : True
+2013-02-12 18:08:22,578 DEBUG ALLOWED_EXTENSIONS : ['mp3']
+2013-02-12 18:08:22,579 DEBUG Setting up zmq...
+2013-02-12 18:08:22,580 DEBUG Finished setting up zmq.
+2013-02-12 18:08:22,580 DEBUG Setting up assets_env...
+2013-02-12 18:08:22,581 DEBUG Finished setting up assets_env.
+2013-02-12 18:08:22,586 DEBUG Setting up db...
+2013-02-12 18:08:22,592 DEBUG Finished setting up db.
+2013-02-12 18:08:22,592 DEBUG Settingup login manager...
+2013-02-12 18:08:22,592 DEBUG Finished setting up login manager.
+2013-02-12 18:08:22,592 DEBUG Setting up principals...
+2013-02-12 18:08:22,593 DEBUG Finished setting up principals.
+2013-02-12 18:08:22,596 DEBUG localmq : tcp://0.0.0.0:5000
+2013-02-12 18:08:22,596 DEBUG localmq : tcp://0.0.0.0:5000
+2013-02-12 18:08:22,597 DEBUG temp : mash-temp
+2013-02-12 18:08:22,597 DEBUG temp : mash-temp
+2013-02-12 18:08:22,597 DEBUG uploadFolder : ~/workspace/monstermash/upload
+2013-02-12 18:08:22,597 DEBUG uploadFolder : ~/workspace/monstermash/upload
+2013-02-12 18:08:22,597 DEBUG remotehost : http://127.0.0.1:8000
+2013-02-12 18:08:22,597 DEBUG remotehost : http://127.0.0.1:8000
+2013-02-12 18:08:22,597 DEBUG outputhostuser : karl
+2013-02-12 18:08:22,597 DEBUG outputhostuser : karl
+2013-02-12 18:08:22,597 DEBUG outputhostname : karl-Virtualbox
+2013-02-12 18:08:22,597 DEBUG outputhostname : karl-Virtualbox
+2013-02-12 18:08:22,597 DEBUG dbhost : sqlite:///mash.db
+2013-02-12 18:08:22,597 DEBUG dbhost : sqlite:///mash.db
+2013-02-12 18:08:22,598 DEBUG SECRET_KEY : IUHWEUHWIUHE@(@(*YWG
+2013-02-12 18:08:22,598 DEBUG SECRET_KEY : IUHWEUHWIUHE@(@(*YWG
+2013-02-12 18:08:22,598 DEBUG UPLOAD_FOLDER : upload
+2013-02-12 18:08:22,598 DEBUG UPLOAD_FOLDER : upload
+2013-02-12 18:08:22,598 DEBUG MASH_FOLDER : mash
+2013-02-12 18:08:22,598 DEBUG MASH_FOLDER : mash
+2013-02-12 18:08:22,598 DEBUG REMOTEPUSH : tcp://0.0.0.0:5000
+2013-02-12 18:08:22,598 DEBUG REMOTEPUSH : tcp://0.0.0.0:5000
+2013-02-12 18:08:22,598 DEBUG SQLALCHEMY_DATABASE_URI : sqlite:///mash.db
+2013-02-12 18:08:22,598 DEBUG SQLALCHEMY_DATABASE_URI : sqlite:///mash.db
+2013-02-12 18:08:22,598 DEBUG ASSETS_DEBUG : True
+2013-02-12 18:08:22,598 DEBUG ASSETS_DEBUG : True
+2013-02-12 18:08:22,599 DEBUG DEBUG : True
+2013-02-12 18:08:22,599 DEBUG DEBUG : True
+2013-02-12 18:08:22,599 DEBUG SQLALCHEMY_ECHO : True
+2013-02-12 18:08:22,599 DEBUG SQLALCHEMY_ECHO : True
+2013-02-12 18:08:22,599 DEBUG ALLOWED_EXTENSIONS : ['mp3']
+2013-02-12 18:08:22,599 DEBUG ALLOWED_EXTENSIONS : ['mp3']
+2013-02-12 18:08:22,599 DEBUG Setting up zmq...
+2013-02-12 18:08:22,599 DEBUG Setting up zmq...
+2013-02-12 18:08:22,600 DEBUG Finished setting up zmq.
+2013-02-12 18:08:22,600 DEBUG Finished setting up zmq.
+2013-02-12 18:08:22,600 DEBUG Setting up assets_env...
+2013-02-12 18:08:22,600 DEBUG Setting up assets_env...
+2013-02-12 18:08:22,600 DEBUG Finished setting up assets_env.
+2013-02-12 18:08:22,600 DEBUG Finished setting up assets_env.
+2013-02-12 18:08:22,601 DEBUG Setting up db...
+2013-02-12 18:08:22,601 DEBUG Setting up db...
+2013-02-12 18:08:22,601 DEBUG Finished setting up db.
+2013-02-12 18:08:22,601 DEBUG Finished setting up db.
+2013-02-12 18:08:22,601 DEBUG Settingup login manager...
+2013-02-12 18:08:22,601 DEBUG Settingup login manager...
+2013-02-12 18:08:22,602 DEBUG Finished setting up login manager.
+2013-02-12 18:08:22,602 DEBUG Finished setting up login manager.
+2013-02-12 18:08:22,602 DEBUG Setting up principals...
+2013-02-12 18:08:22,602 DEBUG Setting up principals...
+2013-02-12 18:08:22,602 DEBUG Finished setting up principals.
+2013-02-12 18:08:22,602 DEBUG Finished setting up principals.
+2013-02-12 18:08:22,832 DEBUG localmq : tcp://0.0.0.0:5000
+2013-02-12 18:08:22,832 DEBUG temp : mash-temp
+2013-02-12 18:08:22,832 DEBUG uploadFolder : ~/workspace/monstermash/upload
+2013-02-12 18:08:22,833 DEBUG remotehost : http://127.0.0.1:8000
+2013-02-12 18:08:22,833 DEBUG outputhostuser : karl
+2013-02-12 18:08:22,833 DEBUG outputhostname : karl-Virtualbox
+2013-02-12 18:08:22,833 DEBUG dbhost : sqlite:///mash.db
+2013-02-12 18:08:22,833 DEBUG SECRET_KEY : IUHWEUHWIUHE@(@(*YWG
+2013-02-12 18:08:22,833 DEBUG UPLOAD_FOLDER : upload
+2013-02-12 18:08:22,833 DEBUG MASH_FOLDER : mash
+2013-02-12 18:08:22,833 DEBUG REMOTEPUSH : tcp://0.0.0.0:5000
+2013-02-12 18:08:22,833 DEBUG SQLALCHEMY_DATABASE_URI : sqlite:///mash.db
+2013-02-12 18:08:22,833 DEBUG ASSETS_DEBUG : True
+2013-02-12 18:08:22,834 DEBUG DEBUG : True
+2013-02-12 18:08:22,834 DEBUG SQLALCHEMY_ECHO : True
+2013-02-12 18:08:22,834 DEBUG ALLOWED_EXTENSIONS : ['mp3']
+2013-02-12 18:08:22,835 DEBUG Setting up zmq...
+2013-02-12 18:08:22,836 DEBUG Finished setting up zmq.
+2013-02-12 18:08:22,836 DEBUG Setting up assets_env...
+2013-02-12 18:08:22,837 DEBUG Finished setting up assets_env.
+2013-02-12 18:08:22,841 DEBUG Setting up db...
+2013-02-12 18:08:22,853 DEBUG Finished setting up db.
+2013-02-12 18:08:22,853 DEBUG Settingup login manager...
+2013-02-12 18:08:22,853 DEBUG Finished setting up login manager.
+2013-02-12 18:08:22,853 DEBUG Setting up principals...
+2013-02-12 18:08:22,854 DEBUG Finished setting up principals.
+2013-02-12 18:08:22,855 DEBUG localmq : tcp://0.0.0.0:5000
+2013-02-12 18:08:22,855 DEBUG localmq : tcp://0.0.0.0:5000
+2013-02-12 18:08:22,855 DEBUG temp : mash-temp
+2013-02-12 18:08:22,855 DEBUG temp : mash-temp
+2013-02-12 18:08:22,856 DEBUG uploadFolder : ~/workspace/monstermash/upload
+2013-02-12 18:08:22,856 DEBUG uploadFolder : ~/workspace/monstermash/upload
+2013-02-12 18:08:22,856 DEBUG remotehost : http://127.0.0.1:8000
+2013-02-12 18:08:22,856 DEBUG remotehost : http://127.0.0.1:8000
+2013-02-12 18:08:22,856 DEBUG outputhostuser : karl
+2013-02-12 18:08:22,856 DEBUG outputhostuser : karl
+2013-02-12 18:08:22,857 DEBUG outputhostname : karl-Virtualbox
+2013-02-12 18:08:22,857 DEBUG outputhostname : karl-Virtualbox
+2013-02-12 18:08:22,857 DEBUG dbhost : sqlite:///mash.db
+2013-02-12 18:08:22,857 DEBUG dbhost : sqlite:///mash.db
+2013-02-12 18:08:22,857 DEBUG SECRET_KEY : IUHWEUHWIUHE@(@(*YWG
+2013-02-12 18:08:22,857 DEBUG SECRET_KEY : IUHWEUHWIUHE@(@(*YWG
+2013-02-12 18:08:22,858 DEBUG UPLOAD_FOLDER : upload
+2013-02-12 18:08:22,858 DEBUG UPLOAD_FOLDER : upload
+2013-02-12 18:08:22,858 DEBUG MASH_FOLDER : mash
+2013-02-12 18:08:22,858 DEBUG MASH_FOLDER : mash
+2013-02-12 18:08:22,858 DEBUG REMOTEPUSH : tcp://0.0.0.0:5000
+2013-02-12 18:08:22,858 DEBUG REMOTEPUSH : tcp://0.0.0.0:5000
+2013-02-12 18:08:22,858 DEBUG SQLALCHEMY_DATABASE_URI : sqlite:///mash.db
+2013-02-12 18:08:22,858 DEBUG SQLALCHEMY_DATABASE_URI : sqlite:///mash.db
+2013-02-12 18:08:22,858 DEBUG ASSETS_DEBUG : True
+2013-02-12 18:08:22,858 DEBUG ASSETS_DEBUG : True
+2013-02-12 18:08:22,858 DEBUG DEBUG : True
+2013-02-12 18:08:22,858 DEBUG DEBUG : True
+2013-02-12 18:08:22,858 DEBUG SQLALCHEMY_ECHO : True
+2013-02-12 18:08:22,858 DEBUG SQLALCHEMY_ECHO : True
+2013-02-12 18:08:22,859 DEBUG ALLOWED_EXTENSIONS : ['mp3']
+2013-02-12 18:08:22,859 DEBUG ALLOWED_EXTENSIONS : ['mp3']
+2013-02-12 18:08:22,859 DEBUG Setting up zmq...
+2013-02-12 18:08:22,859 DEBUG Setting up zmq...
+2013-02-12 18:08:22,859 DEBUG Finished setting up zmq.
+2013-02-12 18:08:22,859 DEBUG Finished setting up zmq.
+2013-02-12 18:08:22,860 DEBUG Setting up assets_env...
+2013-02-12 18:08:22,860 DEBUG Setting up assets_env...
+2013-02-12 18:08:22,860 DEBUG Finished setting up assets_env.
+2013-02-12 18:08:22,860 DEBUG Finished setting up assets_env.
+2013-02-12 18:08:22,860 DEBUG Setting up db...
+2013-02-12 18:08:22,860 DEBUG Setting up db...
+2013-02-12 18:08:22,861 DEBUG Finished setting up db.
+2013-02-12 18:08:22,861 DEBUG Finished setting up db.
+2013-02-12 18:08:22,861 DEBUG Settingup login manager...
+2013-02-12 18:08:22,861 DEBUG Settingup login manager...
+2013-02-12 18:08:22,861 DEBUG Finished setting up login manager.
+2013-02-12 18:08:22,861 DEBUG Finished setting up login manager.
+2013-02-12 18:08:22,861 DEBUG Setting up principals...
+2013-02-12 18:08:22,861 DEBUG Setting up principals...
+2013-02-12 18:08:22,862 DEBUG Finished setting up principals.
+2013-02-12 18:08:22,862 DEBUG Finished setting up principals.
+2013-02-12 18:08:51,487 DEBUG /mash/79b589230a7445e5b17cc7e5503e1b81
+2013-02-12 18:08:51,487 DEBUG /mash/79b589230a7445e5b17cc7e5503e1b81
+2013-02-12 18:08:51,498 DEBUG /uploads/79b589230a7445e5b17cc7e5503e1b81/01_Hate_Conquer_Dstroy_REPEAT.mp3
+2013-02-12 18:08:51,498 DEBUG /uploads/79b589230a7445e5b17cc7e5503e1b81/01_Hate_Conquer_Dstroy_REPEAT.mp3
+2013-02-12 18:08:51,509 DEBUG /uploads/79b589230a7445e5b17cc7e5503e1b81/BennyHill.mp3
+2013-02-12 18:08:51,509 DEBUG /uploads/79b589230a7445e5b17cc7e5503e1b81/BennyHill.mp3
+2013-02-12 18:10:28,292 DEBUG localmq : tcp://0.0.0.0:5000
+2013-02-12 18:10:28,292 DEBUG temp : mash-temp
+2013-02-12 18:10:28,293 DEBUG uploadFolder : ~/workspace/monstermash/monstermash/upload
+2013-02-12 18:10:28,293 DEBUG remotehost : http://127.0.0.1:8000
+2013-02-12 18:10:28,293 DEBUG outputhostuser : karl
+2013-02-12 18:10:28,293 DEBUG outputhostname : karl-Virtualbox
+2013-02-12 18:10:28,293 DEBUG dbhost : sqlite:///mash.db
+2013-02-12 18:10:28,293 DEBUG SECRET_KEY : IUHWEUHWIUHE@(@(*YWG
+2013-02-12 18:10:28,293 DEBUG UPLOAD_FOLDER : upload
+2013-02-12 18:10:28,294 DEBUG MASH_FOLDER : mash
+2013-02-12 18:10:28,294 DEBUG REMOTEPUSH : tcp://0.0.0.0:5000
+2013-02-12 18:10:28,294 DEBUG SQLALCHEMY_DATABASE_URI : sqlite:///mash.db
+2013-02-12 18:10:28,294 DEBUG ASSETS_DEBUG : True
+2013-02-12 18:10:28,294 DEBUG DEBUG : True
+2013-02-12 18:10:28,294 DEBUG SQLALCHEMY_ECHO : True
+2013-02-12 18:10:28,294 DEBUG ALLOWED_EXTENSIONS : ['mp3']
+2013-02-12 18:10:28,296 DEBUG Setting up zmq...
+2013-02-12 18:10:28,296 DEBUG Finished setting up zmq.
+2013-02-12 18:10:28,297 DEBUG Setting up assets_env...
+2013-02-12 18:10:28,297 DEBUG Finished setting up assets_env.
+2013-02-12 18:10:28,301 DEBUG Setting up db...
+2013-02-12 18:10:28,306 DEBUG Finished setting up db.
+2013-02-12 18:10:28,306 DEBUG Settingup login manager...
+2013-02-12 18:10:28,306 DEBUG Finished setting up login manager.
+2013-02-12 18:10:28,307 DEBUG Setting up principals...
+2013-02-12 18:10:28,307 DEBUG Finished setting up principals.
+2013-02-12 18:10:28,308 DEBUG localmq : tcp://0.0.0.0:5000
+2013-02-12 18:10:28,308 DEBUG localmq : tcp://0.0.0.0:5000
+2013-02-12 18:10:28,308 DEBUG temp : mash-temp
+2013-02-12 18:10:28,308 DEBUG temp : mash-temp
+2013-02-12 18:10:28,308 DEBUG uploadFolder : ~/workspace/monstermash/monstermash/upload
+2013-02-12 18:10:28,308 DEBUG uploadFolder : ~/workspace/monstermash/monstermash/upload
+2013-02-12 18:10:28,309 DEBUG remotehost : http://127.0.0.1:8000
+2013-02-12 18:10:28,309 DEBUG remotehost : http://127.0.0.1:8000
+2013-02-12 18:10:28,309 DEBUG outputhostuser : karl
+2013-02-12 18:10:28,309 DEBUG outputhostuser : karl
+2013-02-12 18:10:28,309 DEBUG outputhostname : karl-Virtualbox
+2013-02-12 18:10:28,309 DEBUG outputhostname : karl-Virtualbox
+2013-02-12 18:10:28,309 DEBUG dbhost : sqlite:///mash.db
+2013-02-12 18:10:28,309 DEBUG dbhost : sqlite:///mash.db
+2013-02-12 18:10:28,309 DEBUG SECRET_KEY : IUHWEUHWIUHE@(@(*YWG
+2013-02-12 18:10:28,309 DEBUG SECRET_KEY : IUHWEUHWIUHE@(@(*YWG
+2013-02-12 18:10:28,310 DEBUG UPLOAD_FOLDER : upload
+2013-02-12 18:10:28,310 DEBUG UPLOAD_FOLDER : upload
+2013-02-12 18:10:28,310 DEBUG MASH_FOLDER : mash
+2013-02-12 18:10:28,310 DEBUG MASH_FOLDER : mash
+2013-02-12 18:10:28,310 DEBUG REMOTEPUSH : tcp://0.0.0.0:5000
+2013-02-12 18:10:28,310 DEBUG REMOTEPUSH : tcp://0.0.0.0:5000
+2013-02-12 18:10:28,310 DEBUG SQLALCHEMY_DATABASE_URI : sqlite:///mash.db
+2013-02-12 18:10:28,310 DEBUG SQLALCHEMY_DATABASE_URI : sqlite:///mash.db
+2013-02-12 18:10:28,310 DEBUG ASSETS_DEBUG : True
+2013-02-12 18:10:28,310 DEBUG ASSETS_DEBUG : True
+2013-02-12 18:10:28,311 DEBUG DEBUG : True
+2013-02-12 18:10:28,311 DEBUG DEBUG : True
+2013-02-12 18:10:28,311 DEBUG SQLALCHEMY_ECHO : True
+2013-02-12 18:10:28,311 DEBUG SQLALCHEMY_ECHO : True
+2013-02-12 18:10:28,311 DEBUG ALLOWED_EXTENSIONS : ['mp3']
+2013-02-12 18:10:28,311 DEBUG ALLOWED_EXTENSIONS : ['mp3']
+2013-02-12 18:10:28,311 DEBUG Setting up zmq...
+2013-02-12 18:10:28,311 DEBUG Setting up zmq...
+2013-02-12 18:10:28,312 DEBUG Finished setting up zmq.
+2013-02-12 18:10:28,312 DEBUG Finished setting up zmq.
+2013-02-12 18:10:28,312 DEBUG Setting up assets_env...
+2013-02-12 18:10:28,312 DEBUG Setting up assets_env...
+2013-02-12 18:10:28,312 DEBUG Finished setting up assets_env.
+2013-02-12 18:10:28,312 DEBUG Finished setting up assets_env.
+2013-02-12 18:10:28,313 DEBUG Setting up db...
+2013-02-12 18:10:28,313 DEBUG Setting up db...
+2013-02-12 18:10:28,313 DEBUG Finished setting up db.
+2013-02-12 18:10:28,313 DEBUG Finished setting up db.
+2013-02-12 18:10:28,314 DEBUG Settingup login manager...
+2013-02-12 18:10:28,314 DEBUG Settingup login manager...
+2013-02-12 18:10:28,314 DEBUG Finished setting up login manager.
+2013-02-12 18:10:28,314 DEBUG Finished setting up login manager.
+2013-02-12 18:10:28,314 DEBUG Setting up principals...
+2013-02-12 18:10:28,314 DEBUG Setting up principals...
+2013-02-12 18:10:28,314 DEBUG Finished setting up principals.
+2013-02-12 18:10:28,314 DEBUG Finished setting up principals.
+2013-02-12 18:10:28,492 DEBUG localmq : tcp://0.0.0.0:5000
+2013-02-12 18:10:28,492 DEBUG temp : mash-temp
+2013-02-12 18:10:28,492 DEBUG uploadFolder : ~/workspace/monstermash/monstermash/upload
+2013-02-12 18:10:28,492 DEBUG remotehost : http://127.0.0.1:8000
+2013-02-12 18:10:28,492 DEBUG outputhostuser : karl
+2013-02-12 18:10:28,492 DEBUG outputhostname : karl-Virtualbox
+2013-02-12 18:10:28,493 DEBUG dbhost : sqlite:///mash.db
+2013-02-12 18:10:28,493 DEBUG SECRET_KEY : IUHWEUHWIUHE@(@(*YWG
+2013-02-12 18:10:28,493 DEBUG UPLOAD_FOLDER : upload
+2013-02-12 18:10:28,493 DEBUG MASH_FOLDER : mash
+2013-02-12 18:10:28,493 DEBUG REMOTEPUSH : tcp://0.0.0.0:5000
+2013-02-12 18:10:28,493 DEBUG SQLALCHEMY_DATABASE_URI : sqlite:///mash.db
+2013-02-12 18:10:28,493 DEBUG ASSETS_DEBUG : True
+2013-02-12 18:10:28,493 DEBUG DEBUG : True
+2013-02-12 18:10:28,493 DEBUG SQLALCHEMY_ECHO : True
+2013-02-12 18:10:28,493 DEBUG ALLOWED_EXTENSIONS : ['mp3']
+2013-02-12 18:10:28,495 DEBUG Setting up zmq...
+2013-02-12 18:10:28,495 DEBUG Finished setting up zmq.
+2013-02-12 18:10:28,495 DEBUG Setting up assets_env...
+2013-02-12 18:10:28,496 DEBUG Finished setting up assets_env.
+2013-02-12 18:10:28,501 DEBUG Setting up db...
+2013-02-12 18:10:28,506 DEBUG Finished setting up db.
+2013-02-12 18:10:28,506 DEBUG Settingup login manager...
+2013-02-12 18:10:28,507 DEBUG Finished setting up login manager.
+2013-02-12 18:10:28,507 DEBUG Setting up principals...
+2013-02-12 18:10:28,507 DEBUG Finished setting up principals.
+2013-02-12 18:10:28,508 DEBUG localmq : tcp://0.0.0.0:5000
+2013-02-12 18:10:28,508 DEBUG localmq : tcp://0.0.0.0:5000
+2013-02-12 18:10:28,509 DEBUG temp : mash-temp
+2013-02-12 18:10:28,509 DEBUG temp : mash-temp
+2013-02-12 18:10:28,509 DEBUG uploadFolder : ~/workspace/monstermash/monstermash/upload
+2013-02-12 18:10:28,509 DEBUG uploadFolder : ~/workspace/monstermash/monstermash/upload
+2013-02-12 18:10:28,509 DEBUG remotehost : http://127.0.0.1:8000
+2013-02-12 18:10:28,509 DEBUG remotehost : http://127.0.0.1:8000
+2013-02-12 18:10:28,509 DEBUG outputhostuser : karl
+2013-02-12 18:10:28,509 DEBUG outputhostuser : karl
+2013-02-12 18:10:28,510 DEBUG outputhostname : karl-Virtualbox
+2013-02-12 18:10:28,510 DEBUG outputhostname : karl-Virtualbox
+2013-02-12 18:10:28,510 DEBUG dbhost : sqlite:///mash.db
+2013-02-12 18:10:28,510 DEBUG dbhost : sqlite:///mash.db
+2013-02-12 18:10:28,510 DEBUG SECRET_KEY : IUHWEUHWIUHE@(@(*YWG
+2013-02-12 18:10:28,510 DEBUG SECRET_KEY : IUHWEUHWIUHE@(@(*YWG
+2013-02-12 18:10:28,510 DEBUG UPLOAD_FOLDER : upload
+2013-02-12 18:10:28,510 DEBUG UPLOAD_FOLDER : upload
+2013-02-12 18:10:28,510 DEBUG MASH_FOLDER : mash
+2013-02-12 18:10:28,510 DEBUG MASH_FOLDER : mash
+2013-02-12 18:10:28,510 DEBUG REMOTEPUSH : tcp://0.0.0.0:5000
+2013-02-12 18:10:28,510 DEBUG REMOTEPUSH : tcp://0.0.0.0:5000
+2013-02-12 18:10:28,511 DEBUG SQLALCHEMY_DATABASE_URI : sqlite:///mash.db
+2013-02-12 18:10:28,511 DEBUG SQLALCHEMY_DATABASE_URI : sqlite:///mash.db
+2013-02-12 18:10:28,511 DEBUG ASSETS_DEBUG : True
+2013-02-12 18:10:28,511 DEBUG ASSETS_DEBUG : True
+2013-02-12 18:10:28,511 DEBUG DEBUG : True
+2013-02-12 18:10:28,511 DEBUG DEBUG : True
+2013-02-12 18:10:28,511 DEBUG SQLALCHEMY_ECHO : True
+2013-02-12 18:10:28,511 DEBUG SQLALCHEMY_ECHO : True
+2013-02-12 18:10:28,511 DEBUG ALLOWED_EXTENSIONS : ['mp3']
+2013-02-12 18:10:28,511 DEBUG ALLOWED_EXTENSIONS : ['mp3']
+2013-02-12 18:10:28,512 DEBUG Setting up zmq...
+2013-02-12 18:10:28,512 DEBUG Setting up zmq...
+2013-02-12 18:10:28,512 DEBUG Finished setting up zmq.
+2013-02-12 18:10:28,512 DEBUG Finished setting up zmq.
+2013-02-12 18:10:28,512 DEBUG Setting up assets_env...
+2013-02-12 18:10:28,512 DEBUG Setting up assets_env...
+2013-02-12 18:10:28,513 DEBUG Finished setting up assets_env.
+2013-02-12 18:10:28,513 DEBUG Finished setting up assets_env.
+2013-02-12 18:10:28,513 DEBUG Setting up db...
+2013-02-12 18:10:28,513 DEBUG Setting up db...
+2013-02-12 18:10:28,513 DEBUG Finished setting up db.
+2013-02-12 18:10:28,513 DEBUG Finished setting up db.
+2013-02-12 18:10:28,514 DEBUG Settingup login manager...
+2013-02-12 18:10:28,514 DEBUG Settingup login manager...
+2013-02-12 18:10:28,514 DEBUG Finished setting up login manager.
+2013-02-12 18:10:28,514 DEBUG Finished setting up login manager.
+2013-02-12 18:10:28,514 DEBUG Setting up principals...
+2013-02-12 18:10:28,514 DEBUG Setting up principals...
+2013-02-12 18:10:28,514 DEBUG Finished setting up principals.
+2013-02-12 18:10:28,514 DEBUG Finished setting up principals.
+2013-02-12 18:10:37,900 DEBUG /mash/79b589230a7445e5b17cc7e5503e1b81
+2013-02-12 18:10:37,900 DEBUG /mash/79b589230a7445e5b17cc7e5503e1b81
+2013-02-12 18:10:56,871 DEBUG /mash/79b589230a7445e5b17cc7e5503e1b81
+2013-02-12 18:10:56,871 DEBUG /mash/79b589230a7445e5b17cc7e5503e1b81
+2013-02-12 18:10:56,877 DEBUG /uploads/79b589230a7445e5b17cc7e5503e1b81/01_Hate_Conquer_Dstroy_REPEAT.mp3
+2013-02-12 18:10:56,877 DEBUG /uploads/79b589230a7445e5b17cc7e5503e1b81/01_Hate_Conquer_Dstroy_REPEAT.mp3
+2013-02-12 18:10:56,891 DEBUG /uploads/79b589230a7445e5b17cc7e5503e1b81/BennyHill.mp3
+2013-02-12 18:10:56,891 DEBUG /uploads/79b589230a7445e5b17cc7e5503e1b81/BennyHill.mp3
+2013-02-12 18:11:20,359 DEBUG /mash/79b589230a7445e5b17cc7e5503e1b81
+2013-02-12 18:11:20,359 DEBUG /mash/79b589230a7445e5b17cc7e5503e1b81
+2013-02-12 18:11:22,168 DEBUG /uploads/79b589230a7445e5b17cc7e5503e1b81/output.mp3
+2013-02-12 18:11:22,168 DEBUG /uploads/79b589230a7445e5b17cc7e5503e1b81/output.mp3
+2013-02-12 18:11:28,448 DEBUG /uploads/79b589230a7445e5b17cc7e5503e1b81/output.mp3
+2013-02-12 18:11:28,448 DEBUG /uploads/79b589230a7445e5b17cc7e5503e1b81/output.mp3
