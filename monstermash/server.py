@@ -48,24 +48,27 @@ db.echo = True
 Session = sessionmaker(bind=db)
 session = Session()
 
+temp_folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), temp)
+logger.debug('temp_folder:{0}'.format(temp_folder))
+
 while True:
 	message = socket.recv_json()
 	obj = json.loads(message)[0]
 	mash = MashMessage(obj['id'], obj['key'], obj['song1'], obj['song2'], obj['status'])
 	try:	
 		logger.debug('Processing: (id={0},key={1},song1={2},song2={3},status={4})'.format(mash.id, mash.key, mash.song1, mash.song2, mash.status))
-		song1 = FileDownloader(remotehost, temp, mash.key, mash.song1)
+		song1 = FileDownloader(remotehost, temp_folder, mash.key, mash.song1)
 		song1.download()
 
-		song2 = FileDownloader(remotehost, temp, mash.key, mash.song2)
+		song2 = FileDownloader(remotehost, temp_folder, mash.key, mash.song2)
 		song2.download()
 
-		mashoutput = '{0}/{1}/{2}'.format(temp, mash.key, 'output.mp3')
+		mashoutput = '{0}/{1}/{2}'.format(temp_folder, mash.key, 'output.mp3')
 
 		logger.debug('KEY={0},SONG1={1},SONG2={2},STATUS={3},OUTPUT={4}'.format(mash.key, song1.output, song2.output, mash.status, mashoutput))
 
 		tic = time.time()
-		afromb = AfromB(song1.output, song2.output, mashoutput).run(mix='0.9', envelope='env')
+		afromb = AfromB('{0}'.format(song1.output), '{0}'.format(song2.output), mashoutput).run(mix='0.9', envelope='env')
 		toc = time.time()
 		logger.debug("Elapsed time: %.3f sec" % float(toc-tic))
 
