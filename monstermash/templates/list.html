@@ -1,11 +1,5 @@
 {% extends "layout.html" %}
 {% block content %}
-{% for mash in mashes %}
-<p>{{ mash.song1 }} - {{ mash.song2 }} </p>
-<p>
-	{{ mash.id }} &nbsp; <a href="{{ url_for('mash', key=mash.key) }}">{{ mash.key}}</a>&nbsp;<a href="{{ url_for('uploads', key=mash.key, filename='output.mp3') }}"> Output </a> - <a href="{{ url_for('resubmit', key=mash.key) }}"> Resubmit </a>
-</p>
-{% endfor %}
 
 {% if pagination.has_prev %}
 <a href="{{ url_for('list', page = pagination.page - 1) }}">&lt;&lt; Prev</a>
@@ -18,7 +12,11 @@
 Next &gt;&gt;
 {% endif %}
 
+{% for mash in mashes %}
+<p>{{ mash.song1 }} - {{ mash.song2 }} </p>
 <p>
-	<a href ="{{ url_for('home') }}">New Mash</a>
+	{{ mash.id }} &nbsp; <a href="{{ url_for('mash', key=mash.key) }}">{{ mash.key}}</a>&nbsp;<a href="{{ url_for('uploads', key=mash.key, filename='output.mp3') }}"> Output </a> - <a href="{{ url_for('resubmit', key=mash.key) }}"> Resubmit </a>
 </p>
+{% endfor %}
+
 {% endblock %}
