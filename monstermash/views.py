@@ -7,6 +7,7 @@ import json
 from flask.ext.principal import identity_changed, current_app, Identity, AnonymousIdentity, RoleNeed, UserNeed, identity_loaded
 from __init__ import app, logger, db, db_session, login_manager, cfg, socket, admin_permission
 from models import *
+from pagination import Pagination
 
 @login_manager.user_loader
 def load_user(id):
@@ -108,15 +109,23 @@ def mash(key):
 	except Exception, err:
 		logger.exception('Something bad happened: mash, key={0}'.format(key))
 
-@app.route('/list')
+PER_PAGE = 5 
+
+@app.route('/list/', defaults = {'page':1})
+@app.route('/list/page/<int:page>')
 @admin_permission.require(http_exception=403)
-def list():
+def list(page = 1):
 	try:
-		mashes = db_session.query(Mash)
-		return render_template('list.html', mashes=mashes)
+		count = db_session.query(Mash).count()
+		logger.debug('list: page={0}'.format(page))
+		mashes = db_session.query(Mash).offset(PER_PAGE * (page - 1)).limit(PER_PAGE)
+		if not mashes and page != 1:
+			abort(404)
+		pagination = Pagination(page, PER_PAGE, count)
+		return render_template('list.html', pagination=pagination, mashes=mashes)
 	except Exception, err:
 		logger.exception('Something bad happened: list')
-		
+
 @app.route('/resubmit/<key>')
 @admin_permission.require(http_exception=403)
 def resubmit(key):

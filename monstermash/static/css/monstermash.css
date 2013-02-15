@@ -66,9 +66,13 @@ div.banner {
 }
 
 .mashstatusuploaded {
-	color: red;
+	color: yellow;
 }
 
 .mashstatusready {
 	color: green;
+}
+
+.mashstatusfailed {
+	color: red;
 }
