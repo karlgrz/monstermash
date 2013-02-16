@@ -6,7 +6,7 @@
 </p>
 <p>
 	<div class="mashstatus{{ mash.status }}">
-		Status: {{ mash.status }}
+		Status: {{ mash.status }} &nbsp; | &nbsp; <a href="{{ url_for('resubmit', key=mash.key) }}">Resubmit</a>
 	</div>
 </p>
 {% endblock %}

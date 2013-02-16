@@ -8,11 +8,11 @@ class Mash(Base):
 	__tablename__ = 'mash'
 
 	id = Column(Integer, primary_key=True)
-	key = Column(String)
-	user_id = Column(String, ForeignKey('user.id'))
-	song1 = Column(String)
-	song2 = Column(String)
-	status = Column(String)
+	key = Column(String(32))
+	user_id = Column(Integer, ForeignKey('user.id'))
+	song1 = Column(String(255))
+	song2 = Column(String(255))
+	status = Column(String(32))
 	user = relationship('User')
 
 	def __init__(self, key, user_id, song1, song2, status):
@@ -32,16 +32,16 @@ class User(Base):
 	__tablename__ = 'user'
 
 	id = Column(Integer, primary_key=True)
-	username = Column(String, unique=True)
-	password = Column(String)
-	email = Column(String, unique=True)
+	username = Column(String(32), unique=True)
+	password = Column(String(40))
+	salt = Column(String(32))
 	role = Column(SmallInteger, default=ROLE_USER)
 	mashes = relationship('Mash')
 
-	def __init__(self, username, password, email, role):
+	def __init__(self, username, password, salt, role):
 		self.username = username
 		self.password = password
-		self.email = email
+		self.salt = salt
 		self.role = role
 
 	def is_authenticated(self):

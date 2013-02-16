@@ -8,6 +8,7 @@ from flask.ext.principal import identity_changed, current_app, Identity, Anonymo
 from __init__ import app, logger, db, db_session, login_manager, cfg, socket, admin_permission
 from models import *
 from pagination import Pagination
+import hashlib
 
 @login_manager.user_loader
 def load_user(id):
@@ -21,20 +22,50 @@ def login():
 		if authenticate(username, password):
 			user = db_session.query(User).filter(User.username==username).first()
 			if user is not None:
+				logger.debug('Successfully logged in user: {0}'.format(username))
 				login_user(user)
 				identity_changed.send(current_app._get_current_object(), identity=Identity(user.id))
 			next_arg = request.args.get('next')
 			next = '' if next_arg is None else next_arg
 			return redirect(next or '/')
 		else:
+			logger.error('User: {0} failed to login.'.format(username))
 			return abort(401)
 	else:
 		return render_template('login.html') 
 
 def authenticate(username, password):
 	user = db_session.query(User).filter(User.username==username).first()
-	return user.password == password
-        
+	if user is None:
+		return False
+	else:		
+		hashed_password = hashlib.sha512(password + user.salt).hexdigest()
+		return user.password == hashed_password
+
+@app.route('/register', methods=["GET", "POST"])
+def register():
+	if request.method == 'POST':
+		try:
+			username = request.form['username']
+			password = request.form['password']
+		
+			user = db_session.query(User).filter(User.username==username).first()
+			if user is None:
+				salt = uuid.uuid4().hex        
+				hashed_password = hashlib.sha512(password + salt).hexdigest()
+				new_user = User(username, hashed_password, salt, ROLE_USER)
+				db_session.add(new_user)
+				db_session.commit()
+				return render_template('login.html')
+			else:
+				logger.debug('Username already exists. Try again.')
+				abort(404)
+		except Exception, err:
+			logger.exception('Something bad happened: /register')
+		finally:
+			db_session.rollback()
+	return render_template('register.html')
+
 @app.route("/logout")
 @login_required
 def logout():
@@ -113,7 +144,6 @@ PER_PAGE = 5
 
 @app.route('/list/', defaults = {'page':1})
 @app.route('/list/page/<int:page>')
-@admin_permission.require(http_exception=403)
 def list(page = 1):
 	try:
 		count = db_session.query(Mash).count()
@@ -127,7 +157,6 @@ def list(page = 1):
 		logger.exception('Something bad happened: list')
 
 @app.route('/resubmit/<key>')
-@admin_permission.require(http_exception=403)
 def resubmit(key):
 	try:
 		mash = db_session.query(Mash).filter(Mash.key==key).first()

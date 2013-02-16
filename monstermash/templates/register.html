@@ -1,0 +1,20 @@
+{% extends 'layout.html' %}
+{% block content %}
+<form class="form-horizonal" action="" method=post>    
+	<div class="control-group">
+        <label class="control-label" for="username">Username</label>
+        <div class="controls">
+            <input type="text" name="username" />
+        </div>  
+    </div>  
+    <div class="control-group">
+        <label class="control-label" for="password">Password</label>
+        <div class="controls">
+            <input type="password" name="password" />
+        </div>  
+    </div>  
+    <div class="control-group">
+        <button type=submit class="btn btn-primary">Register</button>
+    </div>  
+</form> 
+{% endblock %}
