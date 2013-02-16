@@ -31,7 +31,7 @@ CREATE TABLE user
 	KEY `role` (`role`)
 );
 
-insert into user (id, username, password, sale, role) values (0, 'Anonymous', '', '', 0);
+insert into user (id, username, password, salt, role) values (0, 'Anonymous', '', '', 0);
 
 create table mash 
 (
