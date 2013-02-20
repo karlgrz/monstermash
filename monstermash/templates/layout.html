@@ -26,11 +26,6 @@
 						<ul class="nav">
 							<li><a href="{{ url_for('about') }}">About</a></li>
 						</ul>
-						<form class="navbar-form pull-right">
-							<input class="span2" type="text" placeholder="Email">
-							<input class="span2" type="password" placeholder="Password">
-							<button type="submit" class="btn">Sign in</button>
-						</form>
 					</div>
 				</div>
 			</div>
@@ -38,14 +33,14 @@
 		<div class="wrap">
 			<div class="container">
 				<div class="page-header">
-					<div style="float: left;">
+					<div style="float: left; padding-top: 60px;">
 						<a href="{{ url_for('home') }}">
 							<h1>MonsterMash</h1>
 							<p>Create mash ups of your favorite songs!</p>
 						</a>
 						<img class="logo" src="{{ url_for('static', filename='images/monster.jpg') }}" style="width: 450px; height: 300px;"/>
 					</div>
-					<div style="float: right;">
+					<div style="float: right; padding-top: 60px;">
 						{% block content %}{% endblock %}
 					</div>
 					<div style="clear: both;"></div>
