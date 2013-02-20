@@ -33,14 +33,14 @@
 		<div class="wrap">
 			<div class="container">
 				<div class="page-header">
-					<div style="float: left; padding-top: 60px;">
+					<div class="float-left content">
 						<a href="{{ url_for('home') }}">
 							<h1>MonsterMash</h1>
 							<p>Create mash ups of your favorite songs!</p>
 						</a>
 						<img class="logo" src="{{ url_for('static', filename='images/monster.jpg') }}" style="width: 450px; height: 300px;"/>
 					</div>
-					<div style="float: right; padding-top: 60px;">
+					<div class="float-right content">
 						{% block content %}{% endblock %}
 					</div>
 					<div style="clear: both;"></div>
