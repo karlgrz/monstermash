@@ -175,6 +175,11 @@ def on_identity_loaded(sender, identity):
 	if hasattr(current_user, 'role'):
 		identity.provides.add(RoleNeed(current_user.role))
 
+@app.route('/about')
+def about():
+	logger.debug('IN ABOUT')
+	return render_template('about.html')
+
 @app.errorhandler(403)
 def page_not_found(e):
 	session['redirected_from'] = request.url

@@ -14,21 +14,18 @@ from sqlalchemy import *
 from sqlalchemy.orm import sessionmaker
 from flask.ext.principal import Principal, RoleNeed, Permission 
 
-print __name__
-
 f = file('mash.cfg')
 cfg = Config(f)
 
 logger = logging.getLogger('web')
 file_handler = logging.FileHandler('log/web.log')
-console_handler = logging.StreamHandler()
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
 file_handler.setFormatter(formatter)
-console_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
-logger.addHandler(console_handler)
 
 logger.setLevel(logging.DEBUG)
+
+logger.debug(__name__)
 
 for key in cfg:
 	logger.debug('{0} : {1}'.format(key, cfg[key]))
