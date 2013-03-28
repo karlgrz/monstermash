@@ -11,7 +11,7 @@ import subprocess
 import os
 from config import Config
 from sqlalchemy import *
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, scoped_session
 from models import *
 import logging
 
@@ -40,10 +40,8 @@ logger.debug('uploadFolder={0}'.format(cfg.uploadFolder))
 logger.debug('remotehost={0}'.format(cfg.remotehost))
 logger.debug('dbhost={0}'.format(cfg.dbhost))
 
-db = create_engine(dbhost)
-db.echo = True 
-Session = sessionmaker(bind=db)
-session = Session()
+db = create_engine(dbhost, echo=True)
+Session = scoped_session(sessionmaker(autoflush=True,autocommit=False,bind=db))
 
 temp_folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), temp)
 logger.debug('temp_folder:{0}'.format(temp_folder))
@@ -52,34 +50,39 @@ while True:
 	message = socket.recv_json()
 	obj = json.loads(message)[0]
 	mash = MashMessage(obj['id'], obj['key'], obj['song1'], obj['song2'], obj['status'])
-	try:	
-		logger.debug('Processing: (id={0},key={1},song1={2},song2={3},status={4})'.format(mash.id, mash.key, mash.song1, mash.song2, mash.status))
-		song1 = FileDownloader(remotehost, temp_folder, mash.key, mash.song1)
-		song1.download()
+	session = Session()
+	try:		
+		try:	
+			logger.debug('Processing: (id={0},key={1},song1={2},song2={3},status={4})'.format(mash.id, mash.key, mash.song1, mash.song2, mash.status))
+			song1 = FileDownloader(remotehost, temp_folder, mash.key, mash.song1)
+			song1.download()
 
-		song2 = FileDownloader(remotehost, temp_folder, mash.key, mash.song2)
-		song2.download()
+			song2 = FileDownloader(remotehost, temp_folder, mash.key, mash.song2)
+			song2.download()
 
-		mashoutput = '{0}/{1}/{2}'.format(temp_folder, mash.key, 'output.mp3')
+			mashoutput = '{0}/{1}/{2}'.format(temp_folder, mash.key, 'output.mp3')
 
-		logger.debug('KEY={0},SONG1={1},SONG2={2},STATUS={3},OUTPUT={4}'.format(mash.key, song1.output, song2.output, mash.status, mashoutput))
+			logger.debug('KEY={0},SONG1={1},SONG2={2},STATUS={3},OUTPUT={4}'.format(mash.key, song1.output, song2.output, mash.status, mashoutput))
 
-		tic = time.time()
-		masher = Masher('{0}'.format(song1.output), '{0}'.format(song2.output), mashoutput).run()
-		toc = time.time()
-		logger.debug("Elapsed time: %.3f sec" % float(toc-tic))
+			tic = time.time()
+			masher = Masher('{0}'.format(song1.output), '{0}'.format(song2.output), mashoutput).run()
+			toc = time.time()
+			logger.debug("Elapsed time: %.3f sec" % float(toc-tic))
 
-		outputpath = os.path.join(uploadFolder, mash.key, 'output.mp3')	
-		logger.debug("Starting scp {0} {1}@{2}:{3}".format(mashoutput, cfg.outputhostuser, cfg.outputhostname, outputpath))
-		p = subprocess.Popen(["scp", mashoutput, "{0}@{1}:{2}".format(cfg.outputhostuser, cfg.outputhostname, outputpath)])
-		sts = os.waitpid(p.pid, 0)
-		logger.debug("sts={0}".format(sts))
-		mashupdate = session.query(Mash).filter(Mash.id==mash.id).first()
-		mashupdate.status = 'ready'
-		session.commit()
-	except Exception, err :
-		mashupdate = session.query(Mash).filter(Mash.id==mash.id).first()
-		mashupdate.status = 'failed'
-		mashupdate.error = err
-		session.commit()
-		logger.exception('Something failed processing key={0}:'.format(mash.key))
+			outputpath = os.path.join(uploadFolder, mash.key, 'output.mp3')	
+			logger.debug("Starting scp {0} {1}@{2}:{3}".format(mashoutput, cfg.outputhostuser, cfg.outputhostname, outputpath))
+			p = subprocess.Popen(["scp", mashoutput, "{0}@{1}:{2}".format(cfg.outputhostuser, cfg.outputhostname, outputpath)])
+			sts = os.waitpid(p.pid, 0)
+			logger.debug("sts={0}".format(sts))
+			mashupdate = session.query(Mash).filter(Mash.id==mash.id).first()
+			mashupdate.status = 'ready'			
+		except Exception, err :
+			session.rollback()
+			mashupdate = session.query(Mash).filter(Mash.id==mash.id).first()
+			mashupdate.status = 'failed'
+			mashupdate.error = err			
+			logger.exception('Something failed processing key={0}:'.format(mash.key))
+		finally:
+			session.commit()
+	finally:
+		session.close()
