@@ -4,7 +4,7 @@
 import zmq
 import json
 import time
-from afromb import AfromB 
+from masher import Masher
 from filedownloader import FileDownloader
 from mashmessage import MashMessage
 import subprocess
@@ -65,7 +65,7 @@ while True:
 		logger.debug('KEY={0},SONG1={1},SONG2={2},STATUS={3},OUTPUT={4}'.format(mash.key, song1.output, song2.output, mash.status, mashoutput))
 
 		tic = time.time()
-		afromb = AfromB('{0}'.format(song1.output), '{0}'.format(song2.output), mashoutput).run(mix='0.9', envelope='env')
+		masher = Masher('{0}'.format(song1.output), '{0}'.format(song2.output), mashoutput).run()
 		toc = time.time()
 		logger.debug("Elapsed time: %.3f sec" % float(toc-tic))
 
