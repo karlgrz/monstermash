@@ -70,9 +70,10 @@ while True:
 		logger.debug("Elapsed time: %.3f sec" % float(toc-tic))
 
 		outputpath = os.path.join(uploadFolder, mash.key, 'output.mp3')	
+		logger.debug("Starting scp {0} {1}@{2}:{3}".format(mashoutput, cfg.outputhostuser, cfg.outputhostname, outputpath))
 		p = subprocess.Popen(["scp", mashoutput, "{0}@{1}:{2}".format(cfg.outputhostuser, cfg.outputhostname, outputpath)])
 		sts = os.waitpid(p.pid, 0)
-
+		logger.debug("sts={0}".format(sts))
 		mashupdate = session.query(Mash).filter(Mash.id==mash.id).first()
 		mashupdate.status = 'ready'
 		session.commit()
