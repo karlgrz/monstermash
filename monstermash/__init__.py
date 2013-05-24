@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, redirect, render_template, url_for, abort, session, send_from_directory, flash, Response
+from flask import Flask, request, redirect, render_template, url_for, abort, session, send_from_directory, flash, Response, g
 import uuid
 from flask.ext.login import LoginManager, login_user, logout_user, current_user, login_required
 from werkzeug import secure_filename
@@ -13,6 +13,7 @@ import logging
 from sqlalchemy import *
 from sqlalchemy.orm import sessionmaker
 from flask.ext.principal import Principal, RoleNeed, Permission 
+import rethinkdb as r
 
 f = file('mash.cfg')
 cfg = Config(f)
@@ -70,5 +71,19 @@ admin_permission = Permission(admin_role)
 principals._init_app(app)
 
 logger.debug('Finished setting up principals.')
+
+@app.before_request
+def before_request():
+    try:
+        g.rdb_conn = r.connect(host=cfg.RETHINKDB, port='28015', db='test')
+    except RqlDriverError:
+        abort(503, "No database connection could be established.")
+
+@app.teardown_request
+def teardown_request(exception):
+    try:
+        g.rdb_conn.close()
+    except AttributeError:
+        pass
 
 from views import *

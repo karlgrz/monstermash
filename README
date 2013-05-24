@@ -3,3 +3,7 @@ monstermash - the mashup generator
 create your own unique mashups as simply as uploading the tracks you want to the monstermash server!
 
 built with python, flask, zeromq, and pyechonest
+
+UPDATE 5/24/2013
+----------------
+- back end now implemented with rethinkdb (http://rethinkdb.com)

@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, redirect, render_template, url_for, abort, session, send_from_directory, flash, Response
+from flask import Flask, request, redirect, render_template, url_for, abort, session, send_from_directory, flash, Response, g
 import uuid
 from flask.ext.login import LoginManager, login_user, logout_user, current_user, login_required
 from werkzeug import secure_filename
@@ -9,6 +9,7 @@ from __init__ import app, logger, db, db_session, login_manager, cfg, socket, ad
 from models import *
 from pagination import Pagination
 import hashlib
+import rethinkdb as r
 
 @login_manager.user_loader
 def load_user(id):
@@ -179,6 +180,13 @@ def on_identity_loaded(sender, identity):
 def about():
 	logger.debug('IN ABOUT')
 	return render_template('about.html')
+
+@app.route('/rethinkdb/<id>')
+def rethinkdb(id):
+	items = r.db('test').table('items')
+	items.insert({"id": id, "value": "value" }).run(g.rdb_conn)
+	count = items.count().run(g.rdb_conn)
+	return render_template('rethinkdb.html', count = count)
 
 @app.errorhandler(403)
 def page_not_found(e):
