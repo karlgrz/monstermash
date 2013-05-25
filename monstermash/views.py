@@ -186,7 +186,8 @@ def rethinkdb(id):
 	items = r.db('test').table('items')
 	items.insert({"id": id, "value": "value" }).run(g.rdb_conn)
 	count = items.count().run(g.rdb_conn)
-	return render_template('rethinkdb.html', count = count)
+	all_items = items.run(g.rdb_conn)
+	return render_template('rethinkdb.html', count=count, items=all_items) 
 
 @app.errorhandler(403)
 def page_not_found(e):
