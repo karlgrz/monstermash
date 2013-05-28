@@ -25,7 +25,8 @@ def home():
 			status = 'uploaded'
 			userid = 0
 			mash = Mash(key, userid, song1Filename, song2Filename, status)	
-			r.db('monstermash').table('mashes').insert(mash).run(g.rdb_conn)
+			r.db('monstermash').table('mashes').insert({'id':key, 'key': key, 'song1': song1Filename, 'song2': song2Filename, 'status': status}).run(g.rdb_conn)
+			logger.debug('new mash:{0}'.format(mash))
 			socket.send_json(convert_mash_to_zeromq_message(mash))
 			return redirect(url_for('mash', key=mash.key))
 		except Exception, err:
@@ -34,6 +35,7 @@ def home():
 
 def convert_mash_to_zeromq_message(mash):
 	try:
+		logger.debug('mash: {0}'.format(mash))
 		obj = [{'id':mash.id, 'key':mash.key, 'song1':mash.song1, 'song2':mash.song2, 'status':mash.status}]
 		return json.dumps(obj)
 	except Exception, err:
@@ -63,7 +65,8 @@ def mash(key):
 	try:
 		logger.debug('/mash/{0}'.format(key))
 		mash = r.db('monstermash').table('mashes').get(key).run(g.rdb_conn)
-		return render_template('mash.html', mash=mash)
+		mash_model = Mash(mash['id'], mash['key'], mash['song1'], mash['song2'], mash['status'])
+		return render_template('mash.html', mash=mash_model)
 	except Exception, err:
 		logger.exception('Something bad happened: mash, key={0}'.format(key))
 
@@ -73,14 +76,19 @@ PER_PAGE = 5
 @app.route('/list/page/<int:page>')
 def list(page = 1):
 	try:
+		logger.debug('/list/{0}'.format(page))
 		items = r.db('monstermash').table('mashes')
 		count = items.count().run(g.rdb_conn)
-		logger.debug('list: page={0}'.format(page))
-		mashes = items.skip(PER_PAGE * (page - 1)).limit(PER_PAGE)
+		logger.debug('number of items: {0}'.format(count))
+		mashes = items.skip(PER_PAGE * (page - 1)).limit(PER_PAGE).run(g.rdb_conn)
+		mash_list = []
+		for mash in mashes:
+			mash_list.append(Mash(mash['id'], mash['key'], mash['song1'], mash['song2'], mash['status']))
+			logger.debug('mash:{0}'.format(mash))
 		if not mashes and page != 1:
 			abort(404)
 		pagination = Pagination(page, PER_PAGE, count)
-		return render_template('list.html', pagination=pagination, mashes=mashes)
+		return render_template('list.html', pagination=pagination, mashes=mash_list)
 	except Exception, err:
 		logger.exception('Something bad happened: list')
 
@@ -88,8 +96,10 @@ def list(page = 1):
 def resubmit(key):
 	try:
 		mash = r.db('monstermash').table('mashes').get(key).run(g.rdb_conn)
-		socket.send_json(convert_mash_to_zeromq_message(mash))
-		return redirect(url_for('mash', key=mash.key))
+		mash_model = Mash(mash['id'], mash['key'], mash['song1'], mash['song2'], mash['status'])
+		logger.debug('resubmit mash:{0}'.format(mash_model))
+		socket.send_json(convert_mash_to_zeromq_message(mash_model))
+		return redirect(url_for('mash', key=mash_model.key))
 	except Exception, err:
 		logger.exception('Something bad happened: resubmit, key={0}'.format(key))
 
@@ -97,14 +107,6 @@ def resubmit(key):
 def about():
 	logger.debug('IN ABOUT')
 	return render_template('about.html')
-
-@app.route('/rethinkdb/<id>')
-def rethinkdb(id):
-	items = r.db('test').table('items')
-	items.insert({"id": id, "value": "value" }).run(g.rdb_conn)
-	count = items.count().run(g.rdb_conn)
-	all_items = items.run(g.rdb_conn)
-	return render_template('rethinkdb.html', count=count, items=all_items) 
 
 @app.errorhandler(403)
 def page_not_found(e):
