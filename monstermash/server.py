@@ -10,10 +10,9 @@ from mashmessage import MashMessage
 import subprocess
 import os
 from config import Config
-from sqlalchemy import *
-from sqlalchemy.orm import sessionmaker, scoped_session
 from models import *
 import logging
+import rethinkdb as r
 
 logger = logging.getLogger('server')
 file_handler = logging.FileHandler('log/server.log')
@@ -39,9 +38,6 @@ logger.debug('temp={0}'.format(cfg.temp))
 logger.debug('uploadFolder={0}'.format(cfg.uploadFolder))
 logger.debug('remotehost={0}'.format(cfg.remotehost))
 logger.debug('dbhost={0}'.format(cfg.dbhost))
-
-db = create_engine(dbhost, echo=True)
-Session = scoped_session(sessionmaker(autoflush=True,autocommit=False,bind=db))
 
 temp_folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), temp)
 logger.debug('temp_folder:{0}'.format(temp_folder))
@@ -74,15 +70,10 @@ while True:
 			p = subprocess.Popen(["scp", mashoutput, "{0}@{1}:{2}".format(cfg.outputhostuser, cfg.outputhostname, outputpath)])
 			sts = os.waitpid(p.pid, 0)
 			logger.debug("sts={0}".format(sts))
-			mashupdate = session.query(Mash).filter(Mash.id==mash.id).first()
-			mashupdate.status = 'ready'			
+			rdb_conn = r.connect(host=cfg.RETHINKDB, port='28015', db='test')
+			r.db('monstermash').table('mashes').get(mash.id).update({status : 'ready'}).run(rdb_conn)
 		except Exception, err :
-			session.rollback()
-			mashupdate = session.query(Mash).filter(Mash.id==mash.id).first()
-			mashupdate.status = 'failed'
-			mashupdate.error = err			
+			r.db('monstermash').table('mashes').get(mash.id).update({status : 'failed', error : err}).run(rdb_conn)
 			logger.exception('Something failed processing key={0}:'.format(mash.key))
-		finally:
-			session.commit()
 	finally:
-		session.close()
+		rdb_conn.close()
