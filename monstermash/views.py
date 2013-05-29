@@ -23,8 +23,7 @@ def home():
 			song2 = request.files['song2']
 			song2Filename = save_file(song2, key)
 			status = 'uploaded'
-			userid = 0
-			mash = MashMessage(key, userid, song1Filename, song2Filename, status)	
+			mash = MashMessage(key, key, song1Filename, song2Filename, status)	
 			r.db('monstermash').table('mashes').insert({'id':key, 'key': key, 'song1': song1Filename, 'song2': song2Filename, 'status': status}).run(g.rdb_conn)
 			logger.debug('new mash:{0}'.format(mash))
 			socket.send_json(convert_mash_to_zeromq_message(mash))
