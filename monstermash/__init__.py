@@ -43,8 +43,6 @@ for name, bundle in assets_loader.load_bundles().iteritems():
 	assets_env.register(name, bundle)
 logger.debug('Finished setting up assets_env.')
 
-from models import *
-
 @app.before_request
 def before_request():
     try:

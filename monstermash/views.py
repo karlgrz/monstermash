@@ -4,7 +4,7 @@ import uuid
 from werkzeug import secure_filename
 import json
 from __init__ import app, logger, cfg, socket
-from models import *
+from mashmessage import MashMessage
 from pagination import Pagination
 import hashlib
 import rethinkdb as r
@@ -24,7 +24,7 @@ def home():
 			song2Filename = save_file(song2, key)
 			status = 'uploaded'
 			userid = 0
-			mash = Mash(key, userid, song1Filename, song2Filename, status)	
+			mash = MashMessage(key, userid, song1Filename, song2Filename, status)	
 			r.db('monstermash').table('mashes').insert({'id':key, 'key': key, 'song1': song1Filename, 'song2': song2Filename, 'status': status}).run(g.rdb_conn)
 			logger.debug('new mash:{0}'.format(mash))
 			socket.send_json(convert_mash_to_zeromq_message(mash))
@@ -65,7 +65,7 @@ def mash(key):
 	try:
 		logger.debug('/mash/{0}'.format(key))
 		mash = r.db('monstermash').table('mashes').get(key).run(g.rdb_conn)
-		mash_model = Mash(mash['id'], mash['key'], mash['song1'], mash['song2'], mash['status'])
+		mash_model = MashMessage(mash['id'], mash['key'], mash['song1'], mash['song2'], mash['status'])
 		return render_template('mash.html', mash=mash_model)
 	except Exception, err:
 		logger.exception('Something bad happened: mash, key={0}'.format(key))
@@ -83,7 +83,7 @@ def list(page = 1):
 		mashes = items.skip(PER_PAGE * (page - 1)).limit(PER_PAGE).run(g.rdb_conn)
 		mash_list = []
 		for mash in mashes:
-			mash_list.append(Mash(mash['id'], mash['key'], mash['song1'], mash['song2'], mash['status']))
+			mash_list.append(MashMessage(mash['id'], mash['key'], mash['song1'], mash['song2'], mash['status']))
 			logger.debug('mash:{0}'.format(mash))
 		if not mashes and page != 1:
 			abort(404)
@@ -96,7 +96,7 @@ def list(page = 1):
 def resubmit(key):
 	try:
 		mash = r.db('monstermash').table('mashes').get(key).run(g.rdb_conn)
-		mash_model = Mash(mash['id'], mash['key'], mash['song1'], mash['song2'], mash['status'])
+		mash_model = MashMessage(mash['id'], mash['key'], mash['song1'], mash['song2'], mash['status'])
 		logger.debug('resubmit mash:{0}'.format(mash_model))
 		socket.send_json(convert_mash_to_zeromq_message(mash_model))
 		return redirect(url_for('mash', key=mash_model.key))

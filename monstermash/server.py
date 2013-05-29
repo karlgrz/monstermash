@@ -10,7 +10,6 @@ from mashmessage import MashMessage
 import subprocess
 import os
 from config import Config
-from models import *
 import logging
 import rethinkdb as r
 
@@ -45,11 +44,10 @@ logger.debug('temp_folder:{0}'.format(temp_folder))
 while True:
 	message = socket.recv_json()
 	logger.debug('message: {0}'.format(message))
-	obj = json.loads(message)
+	obj = json.loads(message)[0]
 	logger.debug('obj: {0}'.format(obj))
 	mash = MashMessage(obj['id'], obj['key'], obj['song1'], obj['song2'], obj['status'])
 	logger.debug('mash: {0}'.format(mash))
-	session = Session()
 	try:		
 		try:	
 			logger.debug('Processing: (id={0},key={1},song1={2},song2={3},status={4})'.format(mash.id, mash.key, mash.song1, mash.song2, mash.status))
@@ -74,9 +72,9 @@ while True:
 			sts = os.waitpid(p.pid, 0)
 			logger.debug("sts={0}".format(sts))
 			rdb_conn = r.connect(host=cfg.RETHINKDB, port='28015', db='test')
-			r.db('monstermash').table('mashes').get(mash.key).update({status : 'ready'}).run(rdb_conn)
+			r.db('monstermash').table('mashes').get(mash.key).update({'status' : 'ready'}).run(rdb_conn)
 		except Exception, err :
-			r.db('monstermash').table('mashes').get(mash.key).update({status : 'failed', error : err}).run(rdb_conn)
+			r.db('monstermash').table('mashes').get(mash.key).update({'status' : 'failed', 'error' : err}).run(rdb_conn)
 			logger.exception('Something failed processing key={0}:'.format(mash.key))
 	finally:
 		rdb_conn.close()
