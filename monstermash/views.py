@@ -10,11 +10,13 @@ import hashlib
 import rethinkdb as r
 import zmq
 
-logger.debug('Setting up zmq...')
-context = zmq.Context()
-socket = context.socket(zmq.PUSH)
-socket.connect(cfg.REMOTEPUSH)
-logger.debug('Finished setting up zmq.')
+def setup_zmq_context():
+	logger.debug('Setting up zmq...')
+	context = zmq.Context()
+	socket = context.socket(zmq.PUSH)
+	socket.connect(cfg.REMOTEPUSH)
+	logger.debug('Finished setting up zmq.')
+	return socket
 
 def allowed_file(filename):
 	return '.' in filename and \
@@ -33,6 +35,7 @@ def home():
 			mash = MashMessage(key, key, song1Filename, song2Filename, status)	
 			r.db('monstermash').table('mashes').insert({'id':key, 'key': key, 'song1': song1Filename, 'song2': song2Filename, 'status': status}).run(g.rdb_conn)
 			logger.debug('new mash:{0}'.format(mash))
+			socket = setup_zmq_context()
 			socket.send_json(convert_mash_to_zeromq_message(mash))
 			return redirect(url_for('mash', key=mash.key))
 		except Exception, err:
@@ -104,6 +107,7 @@ def resubmit(key):
 		mash = r.db('monstermash').table('mashes').get(key).run(g.rdb_conn)
 		mash_model = MashMessage(mash['id'], mash['key'], mash['song1'], mash['song2'], mash['status'])
 		logger.debug('resubmit mash:{0}'.format(mash_model))
+		socket = setup_zmq_context()
 		socket.send_json(convert_mash_to_zeromq_message(mash_model))
 		return redirect(url_for('mash', key=mash_model.key))
 	except Exception, err:
