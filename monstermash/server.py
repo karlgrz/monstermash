@@ -8,6 +8,8 @@ from masher import Masher
 from filedownloader import FileDownloader
 from mashmessage import MashMessage
 import subprocess
+import pwd
+import grp
 import os
 from config import Config
 import logging
@@ -66,15 +68,27 @@ while True:
 			toc = time.time()
 			logger.debug("Elapsed time: %.3f sec" % float(toc-tic))
 
-			outputpath = os.path.join(uploadFolder, mash.key, 'output.mp3')	
-			logger.debug("Starting scp {0} {1}@{2}:{3}".format(mashoutput, cfg.outputhostuser, cfg.outputhostname, outputpath))
-			p = subprocess.Popen(["scp", mashoutput, "{0}@{1}:{2}".format(cfg.outputhostuser, cfg.outputhostname, outputpath)])
+			outputpath = os.path.join(uploadFolder, mash.key, 'output.mp3')
+			if (cfg.outputhostname == 'localhost'):
+				scp_output = outputpath
+			else:
+				scp_output = '{0}@{1}:{2}'.format(cfg.outputhostuser, cfg.outputhostname, outputpath)
+	
+			logger.debug("Starting scp {0} {1}".format(mashoutput, scp_output))
+			p = subprocess.Popen(["scp", mashoutput, scp_output])
 			sts = os.waitpid(p.pid, 0)
+			
+			if (cfg.outputhostname == 'localhost'):
+				uid = pwd.getpwnam(cfg.outputhostuser).pw_uid
+				gid = grp.getgrnam(cfg.outputhostuser).gr_gid
+				os.chown(outputpath, uid, gid)
 			logger.debug("sts={0}".format(sts))
-			rdb_conn = r.connect(host=cfg.RETHINKDB, port='28015', db='test')
+			rdb_conn = r.connect(host=cfg.RETHINKDB, port='28015', db='monstermash')
 			r.db('monstermash').table('mashes').get(mash.key).update({'status' : 'ready'}).run(rdb_conn)
 		except Exception, err :
-			r.db('monstermash').table('mashes').get(mash.key).update({'status' : 'failed', 'error' : err}).run(rdb_conn)
 			logger.exception('Something failed processing key={0}:'.format(mash.key))
+			rdb_conn = r.connect(host=cfg.RETHINKDB, port='28015', db='monstermash')
+			r.db('monstermash').table('mashes').get(mash.key).update({'status' : 'failed', 'error' : err}).run(rdb_conn)
 	finally:
-		rdb_conn.close()
+		if (rdb_conn):
+			rdb_conn.close()
