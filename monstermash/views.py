@@ -3,11 +3,18 @@ from flask import Flask, request, redirect, render_template, url_for, abort, ses
 import uuid
 from werkzeug import secure_filename
 import json
-from __init__ import app, logger, cfg, socket
+from __init__ import app, logger, cfg
 from mashmessage import MashMessage
 from pagination import Pagination
 import hashlib
 import rethinkdb as r
+import zmq
+
+logger.debug('Setting up zmq...')
+context = zmq.Context()
+socket = context.socket(zmq.PUSH)
+socket.connect(cfg.REMOTEPUSH)
+logger.debug('Finished setting up zmq.')
 
 def allowed_file(filename):
 	return '.' in filename and \
