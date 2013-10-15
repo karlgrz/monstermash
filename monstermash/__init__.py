@@ -6,7 +6,6 @@ from flask.ext.assets import Environment
 from webassets.loaders import PythonLoader as PythonAssetsLoader
 from config import Config
 import assets
-import zmq
 import json
 import logging
 import rethinkdb as r
@@ -29,12 +28,6 @@ for key in cfg:
 
 app = Flask(__name__)
 app.secret_key = cfg.SECRET_KEY
-
-logger.debug('Setting up zmq...')
-context = zmq.Context()
-socket = context.socket(zmq.PUSH)
-socket.connect(cfg.REMOTEPUSH)
-logger.debug('Finished setting up zmq.')
 
 logger.debug('Setting up assets_env...')
 assets_env = Environment(app)
