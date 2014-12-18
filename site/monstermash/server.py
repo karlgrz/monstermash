@@ -13,7 +13,7 @@ import grp
 import os
 from config import Config
 import logging
-import rethinkdb as r
+from rethinkdbclient import RethinkDBClient
 
 logger = logging.getLogger('server')
 file_handler = logging.FileHandler('log/server.log')
@@ -50,8 +50,8 @@ while True:
 	logger.debug('obj: {0}'.format(obj))
 	mash = MashMessage(obj['id'], obj['key'], obj['song1'], obj['song2'], obj['status'])
 	logger.debug('mash: {0}'.format(mash))
-	try:		
-		try:	
+	try:
+		try:
 			logger.debug('Processing: (id={0},key={1},song1={2},song2={3},status={4})'.format(mash.id, mash.key, mash.song1, mash.song2, mash.status))
 			song1 = FileDownloader(remotehost, temp_folder, mash.key, mash.song1)
 			song1.download()
@@ -73,22 +73,22 @@ while True:
 				scp_output = outputpath
 			else:
 				scp_output = '{0}@{1}:{2}'.format(cfg.outputhostuser, cfg.outputhostname, outputpath)
-	
+
 			logger.debug("Starting scp {0} {1}".format(mashoutput, scp_output))
 			p = subprocess.Popen(["scp", mashoutput, scp_output])
 			sts = os.waitpid(p.pid, 0)
-			
+
 			if (cfg.outputhostname == 'localhost'):
 				uid = pwd.getpwnam(cfg.outputhostuser).pw_uid
 				gid = grp.getgrnam(cfg.outputhostuser).gr_gid
 				os.chown(outputpath, uid, gid)
 			logger.debug("sts={0}".format(sts))
-			rdb_conn = r.connect(host=cfg.RETHINKDB, port='28015', db='monstermash')
-			r.db('monstermash').table('mashes').get(mash.key).update({'status' : 'ready'}).run(rdb_conn)
+			rdb_client = RethinkDBClient(cfg.RETHINKDB, 'monstermash')
+			rdb_client.update('mashes', mash.key, {'status' : 'ready'})
 		except Exception, err :
 			logger.exception('Something failed processing key={0}:'.format(mash.key))
-			rdb_conn = r.connect(host=cfg.RETHINKDB, port='28015', db='monstermash')
-			r.db('monstermash').table('mashes').get(mash.key).update({'status' : 'failed', 'error' : err}).run(rdb_conn)
+			rdb_client = RethinkDBClient(cfg.RETHINKDB, 'monstermash')
+			rdb_client.update('mashes', mash.key, {'status' : 'failed', 'error' : err})
 	finally:
-		if (rdb_conn):
-			rdb_conn.close()
+		if (rdb_client):
+			rdb_client.close()

@@ -8,8 +8,8 @@ from config import Config
 import assets
 import json
 import logging
-import rethinkdb as r
 import zmq
+from rethinkdbclient import RethinkDBClient
 
 f = file('mash.cfg')
 cfg = Config(f)
@@ -43,18 +43,6 @@ for name, bundle in assets_loader.load_bundles().iteritems():
 	assets_env.register(name, bundle)
 logger.debug('Finished setting up assets_env.')
 
-@app.before_request
-def before_request():
-    try:
-        g.rdb_conn = r.connect(host=cfg.RETHINKDB, port='28015', db='test')
-    except RqlDriverError:
-        abort(503, "No database connection could be established.")
-
-@app.teardown_request
-def teardown_request(exception):
-    try:
-        g.rdb_conn.close()
-    except AttributeError:
-        pass
+rdb_client = RethinkDBClient(cfg.RETHINKDB, 'monstermash')
 
 from views import *

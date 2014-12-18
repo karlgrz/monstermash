@@ -3,11 +3,10 @@ from flask import Flask, request, redirect, render_template, url_for, abort, ses
 import uuid
 from werkzeug import secure_filename
 import json
-from __init__ import app, logger, cfg, socket
+from __init__ import app, logger, cfg, socket, rdb_client
 from mashmessage import MashMessage
 from pagination import Pagination
 import hashlib
-import rethinkdb as r
 
 def allowed_file(filename):
 	return '.' in filename and \
@@ -23,8 +22,8 @@ def home():
 			song2 = request.files['song2']
 			song2Filename = save_file(song2, key)
 			status = 'uploaded'
-			mash = MashMessage(key, key, song1Filename, song2Filename, status)	
-			r.db('monstermash').table('mashes').insert({'id':key, 'key': key, 'song1': song1Filename, 'song2': song2Filename, 'status': status}).run(g.rdb_conn)
+			mash = MashMessage(key, key, song1Filename, song2Filename, status)
+			rdb_client.insert('mashes', {'id':key, 'key': key, 'song1': song1Filename, 'song2': song2Filename, 'status': status})
 			logger.debug('new mash:{0}'.format(mash))
 			socket.send_json(convert_mash_to_zeromq_message(mash))
 			return redirect(url_for('mash', key=mash.key))
@@ -46,7 +45,7 @@ def save_file(file, key):
 			filename = secure_filename(file.filename)
 			folder = os.path.join(app.root_path, cfg.UPLOAD_FOLDER, key)
 			if not os.path.exists(folder):
-				os.makedirs(folder)		
+				os.makedirs(folder)
 			file.save(os.path.join(folder, filename))
 			return filename
 	except Exception, err:
@@ -63,23 +62,21 @@ def uploads(key, filename):
 def mash(key):
 	try:
 		logger.debug('/mash/{0}'.format(key))
-		mash = r.db('monstermash').table('mashes').get(key).run(g.rdb_conn)
+		mash = rdb_client.get('mashes', key)
 		mash_model = MashMessage(mash['id'], mash['key'], mash['song1'], mash['song2'], mash['status'])
 		return render_template('mash.html', mash=mash_model)
 	except Exception, err:
 		logger.exception('Something bad happened: mash, key={0}'.format(key))
 
-PER_PAGE = 5 
+PER_PAGE = 5
 
 @app.route('/list/', defaults = {'page':1})
 @app.route('/list/page/<int:page>')
 def list(page = 1):
 	try:
 		logger.debug('/list/{0}'.format(page))
-		items = r.db('monstermash').table('mashes')
-		count = items.count().run(g.rdb_conn)
-		logger.debug('number of items: {0}'.format(count))
-		mashes = items.skip(PER_PAGE * (page - 1)).limit(PER_PAGE).run(g.rdb_conn)
+		count = rdb_client.count('mashes', {})
+		mashes = rdb_client.filter_paging('mashes', {}, PER_PAGE, page)
 		mash_list = []
 		for mash in mashes:
 			mash_list.append(MashMessage(mash['id'], mash['key'], mash['song1'], mash['song2'], mash['status']))
@@ -94,7 +91,7 @@ def list(page = 1):
 @app.route('/resubmit/<key>')
 def resubmit(key):
 	try:
-		mash = r.db('monstermash').table('mashes').get(key).run(g.rdb_conn)
+		mash = rdb_client.get('mashes', key)
 		mash_model = MashMessage(mash['id'], mash['key'], mash['song1'], mash['song2'], mash['status'])
 		logger.debug('resubmit mash:{0}'.format(mash_model))
 		socket.send_json(convert_mash_to_zeromq_message(mash_model))
